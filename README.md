@@ -9,11 +9,11 @@
  - win32com.client
    ・・・Outlook起動用
  - schedule
-   ・・・任意時刻のプログラム実行用
+   ・・・定時実行用
  - jpholiday
    ・・・祝日判定用
  - datetime
-   ・・・日付取得用・休日判定用
+   ・・・日付取得/休日判定用
  - plyer
    ・・・送信完了通知送信用  
 
