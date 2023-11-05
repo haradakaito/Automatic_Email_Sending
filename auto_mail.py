@@ -76,7 +76,7 @@ def create_progress_plan():
 # 本文を作成
 def create_progress_body(contents, plan):
 
-    head = "agri-minenoの皆様\n峰野研究室B4の原田です. 本日の進捗を共有させていただきます.\n"
+    head = "〇〇の皆様\n〇〇です. 本日の進捗を共有させていただきます.\n"
     head += "\n本日は,"
     for a in contents:
         head += "「"+a+"」"
@@ -88,7 +88,7 @@ def create_progress_body(contents, plan):
     for a in plan:
         hoot += "\n"+a
     hoot += "\n-------------------------------"
-    hoot += "\n静岡大学情報学部情報科学科4年\n原田海斗\nharada.kaito.20@shizuoka.ac.jp"
+    hoot += "\n〇〇大学〇〇学部〇〇科〇年\n氏名\nメールアドレス"
     hoot += "\n-------------------------------"
 
     mail_text = head+"\n"+text+"\n"+hoot
@@ -123,8 +123,8 @@ def send_progress_mail():
 
         outlook = win32com.client.Dispatch("Outlook.Application")
         mail = outlook.CreateItem(0)
-        mail.To = "progress@minelab.jp"
-        mail.BCC = "mkr.k117@gmail.com"
+        mail.To = "宛先"
+        mail.BCC = "共有先"
         mail.Subject = mail_title
         mail.Body = mail_text
         #mail.Display(True)
@@ -139,8 +139,8 @@ def send_quota_mail():
 
     outlook = win32com.client.Dispatch("Outlook.Application")
     mail = outlook.CreateItem(0)
-    mail.To = "kousukesakai0201@gmail.com"
-    mail.BCC = "mkr.k117@gmail.com"
+    mail.To = "宛先"
+    mail.BCC = "共有先"
     mail.Subject = mail_title
     mail.Body = mail_text
     #mail.Display(True)
