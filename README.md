@@ -1,7 +1,7 @@
 # 定時メール自動送信プログラム
 定時メール自動送信プログラムを作成することによって, 「毎日決められた時刻に決められたメールアドレスに対して送信する」という手間が省ける.   
 今回作成したメール自動送信システムの概要図を以下に示す.   
-<img width=500 src=https://github.com/haradakaito/AutoMail/assets/75819611/1d2e3e66-aa2e-4e9b-a2d6-3d798d1d348d>
+<img align=right width=500 src=https://github.com/haradakaito/AutoMail/assets/75819611/1d2e3e66-aa2e-4e9b-a2d6-3d798d1d348d>
 今回作成したプログラム(auto_mail.py)は, Windows10/11で動作することを確認済みである.   
 指定したメールアドレスに対して, 進捗項目記録ファイル(progress.txt, progress_map.txt)から進捗項目を読み取り手メール本文に書き込むことで, 指定した時刻になると, メールを送信するという流れである.   
 
