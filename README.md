@@ -67,6 +67,38 @@ class Sender:
 
         return True
 ```
+## メイン文
+```python
+# 休祝日判定(休祝日: True)
+def judge_holiday():
+    if (jpholiday.is_holiday(datetime.date.today()) == True) or (datetime.datetime.now().weekday() == 5) or (datetime.datetime.now().weekday() == 6):
+        return True
+    else: return False
+
+# メール送信(休祝日以外)
+def send_mail():
+    if judge_holiday() == False:
+
+        getter, creator, sender = Getter(), Creator(), Sender()
+
+        subject =  creator.create_subject() # 件名
+        body = creator.create_body(getter.get_text('./progress/prog.txt'), getter.get_text('./progress/progmap.txt'), getter.get_plan()) # 本文
+
+        flag = sender.mail_send(subject, body)
+        print(flag)
+
+# 毎日20:00にメール送信
+def main():
+    send_mail()
+    # schedule.every(1).day.at('20:00').do(send_mail)
+    # while(True):
+    #     schedule.run_pending()
+    #     time.sleep(30)
+
+if __name__ == '__main__':
+    main()
+```
+
 
 機能としては, 「毎日20:00に進捗報告メールを, 指定メールサーバーに対して送信」「毎日12:00にノルマ確認メールを, 指定メールアドレスに対して送信」の2つを実装している.また, 進捗報告メールを送信するのは平日のみであるため, 休日と祝日以外の日のみ進捗報告メールを送信する. しかしノルマ確認メールは毎日送信する必要があったため, 毎日送信するように実装している.   
 
