@@ -67,33 +67,24 @@ class Sender:
 
         return True
 ```
-## メイン文
+## メインプログラム
 ```python
 # 休祝日判定(休祝日: True)
 def judge_holiday():
-    if (jpholiday.is_holiday(datetime.date.today()) == True) or (datetime.datetime.now().weekday() == 5) or (datetime.datetime.now().weekday() == 6):
-        return True
-    else: return False
+    ## 土日祝の場合 -> True ##
 
 # メール送信(休祝日以外)
 def send_mail():
-    if judge_holiday() == False:
 
+    if judge_holiday() == False:
         getter, creator, sender = Getter(), Creator(), Sender()
 
-        subject =  creator.create_subject() # 件名
-        body = creator.create_body(getter.get_text('./progress/prog.txt'), getter.get_text('./progress/progmap.txt'), getter.get_plan()) # 本文
+        ## 件名と本文を取得 ##
+        ## メール送信 ##
 
-        flag = sender.mail_send(subject, body)
-        print(flag)
-
-# 毎日20:00にメール送信
+# メイン文
 def main():
-    send_mail()
-    # schedule.every(1).day.at('20:00').do(send_mail)
-    # while(True):
-    #     schedule.run_pending()
-    #     time.sleep(30)
+    ## 毎日20:00にsend_mail()を実行 ##
 
 if __name__ == '__main__':
     main()
