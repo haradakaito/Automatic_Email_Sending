@@ -7,6 +7,9 @@
   - ヘッダー(進捗内容)
   - ボディ(進捗全体図)
   - フッター(次回のミーティングの月日)
+ 
+## システム概要図
+![automail_system](https://github.com/haradakaito/AutoMail/assets/75819611/c5dc91c9-1b16-467e-b97f-af085f4229cc)
 
 ## 使用ライブラリ一覧
 - jpholiday
