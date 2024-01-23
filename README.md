@@ -14,6 +14,9 @@
 - schedule
 - time
 - win32com
+```
+$ pip install pywin32 schedule jpholiday
+```
 
 ## クラス定義
 Getterクラスでは，テキストファイルから取得する(get_text)，次回のミーティングの月日(get_plan)といった取得関係の関数が定義される
