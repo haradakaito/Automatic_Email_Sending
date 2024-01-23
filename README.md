@@ -1,4 +1,7 @@
 # 定時メール自動送信プログラム
+## システム概要図
+![automail_system](https://github.com/haradakaito/AutoMail/assets/75819611/c5dc91c9-1b16-467e-b97f-af085f4229cc)
+
 ## 仕様定義
 - 毎日20:00(休祝日を除く)にメールを送信する
 - メールの件名は"年月日"を含む
@@ -7,9 +10,6 @@
   - ヘッダー(進捗内容)
   - ボディ(進捗全体図)
   - フッター(次回のミーティングの月日)
- 
-## システム概要図
-![automail_system](https://github.com/haradakaito/AutoMail/assets/75819611/c5dc91c9-1b16-467e-b97f-af085f4229cc)
 
 ## 使用ライブラリ一覧
 - jpholiday
