@@ -13,6 +13,5 @@ $ pip install pywin32 schedule jpholiday
 
 ## 4. メイン文
 
-## 参考
 
 
