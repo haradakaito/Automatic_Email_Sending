@@ -1,6 +1,6 @@
 # 定時メール自動送信プログラム
 ## 0. システム概要図
-![automail_system](https://github.com/haradakaito/AutoMail/assets/75819611/c5dc91c9-1b16-467e-b97f-af085f4229cc)
+![画像1](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/11d7e684-5137-4044-9622-69bb1764164d)
 
 ## 1. 仕様定義
 
