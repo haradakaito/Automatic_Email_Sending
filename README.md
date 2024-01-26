@@ -22,5 +22,8 @@ $ pip install -r ./requirement.txt
 
 ## 4. メイン文
 
-
+## 5. 実行方法
+```
+$ python daily_report.py
+```
 
