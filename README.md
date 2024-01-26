@@ -24,6 +24,6 @@ $ pip install -r ./requirements.txt
 
 ## 5. 実行方法
 ```
-$ python daily_report.py
+$ python send_daily_report_mail.py
 ```
 
