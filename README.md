@@ -16,7 +16,7 @@
 $ pip install google-api-python-client==2.114.0 google-auth-httplib2==0.2.0 google-auth-oauthlib==1.2.0 jpholiday==0.1.8
 
 # requirement.txtを指定してインストールする場合
-$ pip install -r ./requirement.txt
+$ pip install -r ./requirements.txt
 ```
 ## 3. クラス定義
 
