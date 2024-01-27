@@ -1,0 +1,23 @@
+{
+    "notification": {
+        "line_notify_token": "[Line Notify用のトークン]",
+        "line_notify_api": "https://notify-api.line.me/api/notify"
+    },
+    "database_loading": {
+        "NOTION_MASTER_ID": "[NotionのマスターページのID]",
+        "NOTION_ACCESS_TOKEN": "[Notionのアクセストークン]"
+    },
+    "contents": {
+        "affiliation": "[所属]"
+    },
+    "calendar": {
+        "scopes": "[Google Calendarのスコープ]"
+    },
+    "sender": {
+        "smtp_host": "smtp-mail.outlook.com",
+        "smtp_port": 587
+    },
+    "send_daily_report_mail": {
+        "to_email": "[日報送信先メールアドレス]"
+    }
+}
