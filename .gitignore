@@ -1,0 +1,12 @@
+### ここにはgitに上げたくないファイルを記述する
+### 動作に直接関係ないファイルや、個人情報、認証用のファイルなど
+
+# __pycache__
+**/__pycache__/**
+# 認証用のファイル(credentials.json, token.json)
+**/credentials.json
+**/token.json
+# テストケース
+**/test_case/**
+# configファイル
+**/config/**
