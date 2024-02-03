@@ -27,7 +27,7 @@ configファイル内に保存(config/credentials.json)
 config/config.jsonファイルを以下の項目を更新  
 「LineNotify関連・NotionAPI関連・所属・日報送信先」
 ## 3. ユーザー追加方法
-![画像1](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/07071d0e-e66b-4b97-a106-34327837d3a9)
+![ユーザー追加方法](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/2e5bba75-fbf8-439d-8d94-368556518977)
 
 ## 4. 実行方法
 ```
