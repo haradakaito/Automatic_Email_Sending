@@ -26,11 +26,10 @@ configファイル内に保存(config/credentials.json)
 5. configファイル編集  
 config/config.jsonファイルを以下の項目を更新  
 「LineNotify関連・NotionAPI関連・所属・日報送信先」
-## 3. クラス定義
+## 3. ユーザー追加方法
+<img width="542" alt="スクリーンショット 2024-02-04 010358" src="https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/6cfe9601-3666-4e5c-9b16-1ddd497adc7a">
 
-## 4. メイン文
-
-## 5. 実行方法
+## 4. 実行方法
 ```
 $ python master.py
 ```
