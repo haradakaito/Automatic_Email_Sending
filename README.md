@@ -19,7 +19,7 @@
 $ pip install -r requirements.txt
 ```
 2. Google Calendar API取得  
-下記URL(https://www.coppla-note.net/posts/tutorial/google-calendar-api/)を参考にしてcredentials.jsonを取得  
+下記URL(https://www.coppla-note.net/posts/tutorial/google-calendar-api/ )を参考にしてcredentials.jsonを取得  
 configファイル内に保存(config/credentials.json)
 3. Notion API 取得  
 4. Line Notify API 取得  
