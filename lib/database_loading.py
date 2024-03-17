@@ -52,8 +52,11 @@ class GetProperties:
     def get_user_name_list(self, db_id_list:list):
         user_name_list = []
         for db_id in db_id_list:
-            user_info = self.get_db_info(db_id)
-            user_name_list.append(user_info['name'])
+            try:
+                user_info = self.get_db_info(db_id)
+                user_name_list.append(user_info['name'])
+            except Exception as e:
+                print(e)
         return user_name_list
 
     def _get_personal_info(self, db_json:str):
