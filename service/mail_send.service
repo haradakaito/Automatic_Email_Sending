@@ -1,0 +1,10 @@
+[Unit]
+Description=mail sender
+
+[Service]
+Type=simple
+WorkingDirectory=/usr/local/bin/auto_mail_send/lib/
+ExecStart=/usr/bin/python /usr/local/bin/auto_mail_send/lib/master.py
+
+[Install]
+WantedBy=multi-user.target
