@@ -1,7 +1,7 @@
 import datetime as dt
 import json
 from pathlib import Path
-from ..calendar import Calendar
+from calendar import Calendar
 
 class Contents:
     """

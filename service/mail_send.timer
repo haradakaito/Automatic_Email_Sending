@@ -1,0 +1,6 @@
+[Unit]
+Description=mail sender
+[Timer]
+OnCalendar=*-*-* 19:45:00
+[Install]
+WantedBy=multi-user.target
