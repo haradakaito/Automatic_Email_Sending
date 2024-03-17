@@ -81,7 +81,10 @@ class Contents:
         progress = '本日の進捗を共有させていただきます.\n'
         progress += '本日は'
         progress += self.user_info['progress']
-        progress += 'を行いました.\n'
+        progress += 'を行いました.'
+
+        progress += self.user_info['other']
+
         return progress
     
     def _create_progress_map(self):
@@ -96,12 +99,15 @@ class Contents:
         """
             今後の予定作成
         """
-        
-        plan_list = self.calendar.get_next_plan_list(self.user_info['name'])
-        plans = [f'{self._convert_plan_time(plan[0])}\t: {plan[1]}\n' for plan in plan_list]
-        plan = '-----今後の予定・その他-----\n'
-        plan += ''.join(plans)
-        plan += '------------------------------\n'
+        try:
+            plan_list = self.calendar.get_next_plan_list(self.user_info['name'])
+            plans = [f'{self._convert_plan_time(plan[0])}\t: {plan[1]}\n' for plan in plan_list]
+            plan = '-----今後の予定・その他-----\n'
+            plan += ''.join(plans)
+            plan += '------------------------------\n'
+        except:
+            plan = ''
+
         return plan
     
     def _convert_plan_time(self, plan_time):

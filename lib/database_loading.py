@@ -24,9 +24,9 @@ class GetProperties:
         self.r = requests.post(self.url, headers=self.headers)
         self.db_json = self.r.json()
 
-        self.mailinfo_dict = self._get_personal_info(self.db_json)
+        self.mailinfo_dict, _ = self._get_personal_info(self.db_json)
 
-        return self.mailinfo_dict
+        return self.mailinfo_dict, self.flag
 
     def get_dbid_list(self):
         NOTION_ACCESS_TOKEN = self.conf['master']['NOTION_ACCESS_TOKEN']
@@ -50,25 +50,36 @@ class GetProperties:
         return dbid_list
 
     def get_user_name_list(self, db_id_list:list):
-        user_name_list = []
+        user_name_list, flag_list = [], []
         for db_id in db_id_list:
-            try:
-                user_info = self.get_db_info(db_id)
-                user_name_list.append(user_info['name'])
-            except Exception as e:
-                pass
-        return user_name_list
+            user_info, flag = self.get_db_info(db_id)
+            user_name_list.append(user_info['name'])
+            flag_list.append(flag)
+        return user_name_list, flag_list
 
     def _get_personal_info(self, db_json:str):
 
+        self.flag = True
         self.name = db_json['results'][0]['properties']['苗字']['title'][0]['plain_text']
-        self.grade = db_json['results'][0]['properties']['学年']['rich_text'][0]['plain_text']
-        self.email = db_json['results'][0]['properties']['静大メール']['rich_text'][0]['plain_text']
-        self.password = db_json['results'][0]['properties']['パスワード']['rich_text'][0]['plain_text']
-        self.progress = db_json['results'][0]['properties']['進捗項目']['rich_text'][0]['plain_text']
-        self.progress_map = db_json['results'][0]['properties']['進捗マップ']['rich_text'][0]['plain_text']
-        self.signature = db_json['results'][0]['properties']['署名']['rich_text'][0]['plain_text']
 
-        self.mailinfo_dict = {'name':self.name, 'grade':self.grade, 'email':self.email, 'password':self.password, 'progress':self.progress, 'progress_map':self.progress_map, 'signature':self.signature}
+        property_list = ['学年', '静大メール', 'パスワード', '進捗項目', '進捗マップ', '署名', '自由記入欄']
+        if not any([len(db_json['results'][0]['properties'][p]['rich_text'])==0 for p in property_list]): # 全プロパティが空でない
+            self.grade = db_json['results'][0]['properties']['学年']['rich_text'][0]['plain_text']
+            self.email = db_json['results'][0]['properties']['静大メール']['rich_text'][0]['plain_text']
+            self.password = db_json['results'][0]['properties']['パスワード']['rich_text'][0]['plain_text']
+            self.progress = db_json['results'][0]['properties']['進捗項目']['rich_text'][0]['plain_text']
+            self.progress_map = db_json['results'][0]['properties']['進捗マップ']['rich_text'][0]['plain_text']
+            self.signature = db_json['results'][0]['properties']['署名']['rich_text'][0]['plain_text']
+            self.other = db_json['results'][0]['properties']['自由記入欄']['rich_text'][0]['plain_text']
+        else:
+            self.grade = ''
+            self.email = ''
+            self.password = ''
+            self.progress = ''
+            self.progress_map = ''
+            self.signature = ''
+            self.other = ''
+            self.flag = False
 
-        return self.mailinfo_dict
+        self.mailinfo_dict = {'name':self.name, 'grade':self.grade, 'email':self.email, 'password':self.password, 'progress':self.progress, 'progress_map':self.progress_map, 'signature':self.signature, 'other':self.other}
+        return self.mailinfo_dict, self.flag

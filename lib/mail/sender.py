@@ -2,6 +2,7 @@ from email import message
 import json
 from pathlib import Path
 import smtplib
+import datetime as dt
 
 class Sender:
     """
@@ -51,17 +52,24 @@ class Sender:
         self.body = body  # 本文
 
     def send(self):
+        
         #メッセージ内容
         msg = message.EmailMessage()
         msg['From'] = self.from_email
         msg['To'] = self.to_email
         msg['Subject'] = self.subject
         msg.set_content(self.body)
+
         # サーバーとのやりとり
         server = smtplib.SMTP(self.smtp_host, self.smtp_port)
         server.ehlo()
         server.starttls()
         server.ehlo()
-        server.login(self.user_name,self.password)
-        server.send_message(msg)
-        server.quit()
+
+        try:
+            server.login(self.user_name, self.password)
+            server.send_message(msg)
+            server.quit()
+        except:
+            error_time = dt.datetime.now().strftime('[%Y/%m/%d] %H:%M')
+            print(f'{error_time} MAIL_SENDING_ERROR')
