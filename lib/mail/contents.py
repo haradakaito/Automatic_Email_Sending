@@ -34,7 +34,7 @@ class Contents:
 
     def __init__(self, **user_info):
         self.user_info = user_info
-        # self.calendar = Calendar()  # カレンダーを取得するクラス
+        self.calendar = Calendar()  # カレンダーを取得するクラス
 
     def create_subject(self):
         """
@@ -57,12 +57,11 @@ class Contents:
         # 進捗マップ
         self.progress_map = self._create_progress_map()
         # 今後の予定
-        # self.plan = self._create_plan()
+        self.plan = self._create_plan()
         # 署名
         self.signature = self._create_signature()
         # 本文作成
-        # self.body = self.first + self.progress + "\n\n" + self.progress_map + "\n\n" + self.plan + "\n\n" + self.signature
-        self.body = self.first + self.progress + "\n\n" + self.progress_map + "\n\n" + self.signature
+        self.body = self.first + self.progress + "\n\n" + self.progress_map + "\n\n" + self.plan + "\n\n" + self.signature
         return self.body
     
     def _create_first(self):
