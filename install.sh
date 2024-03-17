@@ -11,8 +11,7 @@ cp -r ./lib/ /usr/local/bin/auto_mail_send/lib
 
 echo "=== Setting up service ==="
 systemctl daemon-reload
-systemctl enable --now mail_send.service
-systemctl enable --now mail_send.timer
-systemctl daemon-reload
+systemctl enable mail_send.service
+systemctl enable mail_send.timer
 
 echo "=== Installation complete ==="
