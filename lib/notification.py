@@ -14,18 +14,26 @@ def line_notify(message):
     line_notify_api = conf['notification']['line_notify_api']
     payload = {'message': message}
     headers = {'Authorization': 'Bearer ' + line_notify_token}
-    requests.post(line_notify_api, data=payload, headers=headers)
 
-def line_notify_daily_report(notify_list):
+    try:
+        requests.post(line_notify_api, data=payload, headers=headers)
+    except:
+        error_time = dt.datetime.now().strftime('[%Y/%m/%d] %H:%M')
+        print(f'{error_time} NOTIFY_ERROR')
+
+def line_notify_daily_report(notify_list, flag_list, base_time):
     message  = f'{dt.date.today()}\n\n'
 
     message += '進捗報告送信リスト\n'
     message += '-----------------------------\n'
 
-    base_date_time = dt.datetime.combine(dt.date.today(), dt.time(20, 0, 0))
+    base_date_time = dt.datetime.combine(dt.date.today(), dt.time(int(base_time[0]), int(base_time[1]), 0))
     for i in range(len(notify_list)):
-        send_date_time = base_date_time + dt.timedelta(seconds=notify_list[i][1])
-        message += f'{notify_list[i][0]}: 送信予定時刻{send_date_time.strftime("%H:%M")}\n'
+        send_date_time = base_date_time + dt.timedelta(seconds=int(notify_list[i][1]))
+        if flag_list[i] == True:
+            message += f'{notify_list[i][0]}: 送信予定時刻{send_date_time.strftime("%H:%M")}\n'
+        else:
+            message += f'{notify_list[i][0]}: × (修正可能時刻～{send_date_time.strftime("%H:%M")})\n'
     message += '-----------------------------'
 
     line_notify(message)

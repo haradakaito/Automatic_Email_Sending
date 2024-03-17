@@ -47,7 +47,6 @@ class Schedule:
         is_weekend = (dt.datetime.now().weekday() == 5) or (dt.datetime.now().weekday() == 6)
         return is_holiday or is_weekend
 
-    
     def is_today_schedule(self, schedule_name:str) -> bool:
         """
             本日特定のイベントがあるかどうかを判定
