@@ -56,7 +56,7 @@ class GetProperties:
                 user_info = self.get_db_info(db_id)
                 user_name_list.append(user_info['name'])
             except Exception as e:
-                print(e)
+                pass
         return user_name_list
 
     def _get_personal_info(self, db_json:str):
