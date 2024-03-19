@@ -6,8 +6,8 @@ pip install --break-system-packages -r requirements.txt || pip install -r requir
 echo "=== Copying files ==="
 cp ./service/* /etc/systemd/system/
 mkdir -p /usr/local/bin/auto_mail_send
-cp -r ./config/ /usr/local/bin/auto_mail_send/config
-cp -r ./lib/ /usr/local/bin/auto_mail_send/lib
+cp -r ./config/ /usr/local/bin/auto_mail_send/
+cp -r ./lib/ /usr/local/bin/auto_mail_send/
 
 echo "=== Setting up service ==="
 systemctl daemon-reload
