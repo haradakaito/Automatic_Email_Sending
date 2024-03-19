@@ -37,7 +37,7 @@ class Sender:
     """
 
     current_dir = Path(__file__).resolve().parent
-    conf_path = current_dir / '../../config/config.json'
+    conf_path = current_dir / '../config/config.json'
     conf = json.load(open(conf_path, 'r', encoding='utf-8'))
 
     # クラス変数

@@ -8,7 +8,7 @@ import requests
 
 class Calendar:
     current_dir = Path(__file__).resolve().parent
-    conf_path = current_dir / "../../config/config.json"
+    conf_path = current_dir / "../config/config.json"
     conf = json.load(open(conf_path, 'r', encoding='utf-8'))
 
     def __init__(self):
@@ -31,7 +31,7 @@ class Calendar:
         start_dt = datetime.now().replace(tzinfo=timezone.utc).date() + timedelta(days=1)
         end_dt = start_dt + timedelta(days=7)
         events = [event for event in events if start_dt <= self.__datetime_to_date(event.get('DTSTART').dt) <= end_dt]
-        events = sorted(events, key=lambda x: x.get('DTSTART').dt)
+        events = sorted(events, key=lambda x: self.__datetime_to_date(x.get('DTSTART').dt))
         event_list = []
         for event in events:
             dtstart = self.__change_timezone(event.get('DTSTART').dt)
