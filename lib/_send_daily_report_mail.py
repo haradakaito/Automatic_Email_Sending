@@ -1,9 +1,9 @@
 import json
 import time
 from pathlib import Path
-from mail.contents import Contents
-from mail.sender import Sender
-from database_loading import GetProperties
+from _contents import Contents
+from _sender import Sender
+from _database_loading import GetProperties
 
 # 設定ファイルの読み込み
 current_dir = Path(__file__).resolve().parent

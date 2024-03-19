@@ -1,7 +1,7 @@
 import datetime as dt
 import json
 from pathlib import Path
-from calendar import Calendar
+from _calendar import Calendar
 
 class Contents:
     """
@@ -30,7 +30,7 @@ class Contents:
     """
 
     current_dir = Path(__file__).resolve().parent
-    conf_path = current_dir / '../../config/config.json'
+    conf_path = current_dir / '../config/config.json'
 
     def __init__(self, **user_info):
         self.user_info = user_info
@@ -105,7 +105,8 @@ class Contents:
             plan = '-----今後の予定・その他-----\n'
             plan += ''.join(plans)
             plan += '------------------------------\n'
-        except:
+        except Exception as e:
+            print(e)
             plan = ''
 
         return plan
