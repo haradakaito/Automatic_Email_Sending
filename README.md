@@ -27,7 +27,7 @@ config/config.jsonファイルを以下の項目を更新
 ###  Windows
 ```
 $ pip install -r requirements.txt
-$ python master-win.py
+$ python lib/master-win.py
 ```
 ### Raspberry Pi OS
 ```
