@@ -1,0 +1,30 @@
+/// 本ファイルはconfig.jsonに変更して使用してください
+/// []で囲まれている部分は適宜変更してください
+/// 1-3行目のコメントは削除してください 
+{
+    "notification": {
+        "line_notify_token": [LINE Notifyのトークン],
+        "line_notify_api": "https://notify-api.line.me/api/notify"
+    },
+    "database_loading": {
+        "NOTION_MASTER_ID": [NotionのMasterID],
+        "NOTION_ACCESS_TOKEN": [Notionのアクセストークン]
+    },
+    "contents": {
+        "affiliation": [所属]
+    },
+    "calendar": {
+        "ical_url": [Google Calendarの非公開icalURL]
+    },
+    "sender": {
+        "smtp_host": "smtp-mail.outlook.com",
+        "smtp_port": 587
+    },
+    "send_daily_report_mail": {
+        "to_email": [宛先]
+    },
+    "master": {
+        "NOTION_ACCESS_TOKEN": [Notionのアクセストークン],
+        "NOTION_MASTER_ID": [NotionのマスターID]
+    }
+}
