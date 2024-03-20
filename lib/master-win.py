@@ -1,13 +1,23 @@
+import schedule
 import random
+import os
 import time
+import shutil
 from threading import Thread
 from _schedule import Schedule
 from _database_loading import GetProperties
 from _notification import line_notify_daily_report
 from _send_daily_report_mail import send_daily_report
 
+# トークンのリセット
+def token_create():
+    os.remove('./config/token.json')
+    _ = Schedule()
+    shutil.move('./config/token.json', f'./config/token/new_token.json')
+
 def send_daily_report_all(base_time):
-    # if Schedule().is_today_holiday() == False: # 休祝日を除いて送信
+    if Schedule().is_today_holiday() == False: # 休祝日を除いて送信
+
         db_id_list = GetProperties().get_dbid_list()  # 各ユーザーのデータベースIDを取得
         user_name_list, flag_list = GetProperties().get_user_name_list(db_id_list)  # 各ユーザーの名前を取得
 
@@ -25,5 +35,13 @@ def send_daily_report_all(base_time):
         for thread in thread_list:
             thread.join()
 
+def main():
+    base_time = ['19','45']
+    schedule.every(1).saturday.at('9:00').do(token_create)
+    schedule.every(1).day.at(f'{base_time[0]}:{base_time[1]}').do(send_daily_report_all, base_time=base_time)
+    while(True):
+        schedule.run_pending()
+        time.sleep(1)
+
 if __name__ == '__main__':
-    send_daily_report_all(base_time=['19','45'])
+    main()
