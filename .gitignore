@@ -11,4 +11,4 @@
 # configファイル
 **/config/**
 
-!**/.gitkeep
+!**/config/config_example.json
