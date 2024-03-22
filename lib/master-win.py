@@ -9,12 +9,6 @@ from _database_loading import GetProperties
 from _notification import line_notify_daily_report
 from _send_daily_report_mail import send_daily_report
 
-# トークンのリセット
-def token_create():
-    os.remove('./config/token.json')
-    _ = Schedule()
-    shutil.move('./config/token.json', f'./config/token/new_token.json')
-
 def send_daily_report_all(base_time):
     if Schedule().is_today_holiday() == False: # 休祝日を除いて送信
 
@@ -31,13 +25,9 @@ def send_daily_report_all(base_time):
         for db_id, sleep_time in zip(db_id_list, sleep_time_list):
             thread = Thread(target=send_daily_report, args=(db_id, sleep_time))
             thread.start()
-            thread_list.append(thread)
-        for thread in thread_list:
-            thread.join()
 
 def main():
     base_time = ['19','45']
-    schedule.every(1).saturday.at('9:00').do(token_create)
     schedule.every(1).day.at(f'{base_time[0]}:{base_time[1]}').do(send_daily_report_all, base_time=base_time)
     while(True):
         schedule.run_pending()
