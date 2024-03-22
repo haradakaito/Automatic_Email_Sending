@@ -21,9 +21,6 @@ def send_daily_report_all(base_time):
         for db_id, sleep_time in zip(db_id_list, sleep_time_list):
             thread = Thread(target=send_daily_report, args=(db_id, sleep_time))
             thread.start()
-            thread_list.append(thread)
-        for thread in thread_list:
-            thread.join()
 
 if __name__ == '__main__':
     send_daily_report_all(base_time=['19','45'])
