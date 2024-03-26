@@ -1,4 +1,4 @@
-import requests
+from notion_client import Client
 import json
 from pathlib import Path
 
@@ -9,54 +9,41 @@ class GetProperties:
 
     NOTION_MASTER_ID = conf['database_loading']['NOTION_MASTER_ID']
 
-    def get_db_info(self, db_id:str):
-        self.db_id = db_id
-        self.NOTION_ACCESS_TOKEN = self.conf['database_loading']['NOTION_ACCESS_TOKEN']
-        self.NOTION_DATABASE_ID = self.db_id
-
-        self.url = f"https://api.notion.com/v1/databases/{self.NOTION_DATABASE_ID}/query"
-        self.headers = {
-        'Authorization': 'Bearer ' + self.NOTION_ACCESS_TOKEN,
-        'Notion-Version': '2021-05-13',
-        'Content-Type': 'application/json',
-        }
-
-        self.r = requests.post(self.url, headers=self.headers)
-        self.db_json = self.r.json()
-
-        self.mailinfo_dict, _ = self._get_personal_info(self.db_json)
-
-        return self.mailinfo_dict, self.flag
-
+    # 全登録ユーザーのデータベースIDリストを取得
     def get_dbid_list(self):
         NOTION_ACCESS_TOKEN = self.conf['master']['NOTION_ACCESS_TOKEN']
         NOTION_MASTER_ID = self.conf['master']['NOTION_MASTER_ID']
+        client = Client(auth=NOTION_ACCESS_TOKEN)
+        self.r = client.databases.query(NOTION_MASTER_ID)
 
-        url = f"https://api.notion.com/v1/databases/{NOTION_MASTER_ID}/query"
-        headers = {
-        'Authorization': 'Bearer ' + NOTION_ACCESS_TOKEN,
-        'Notion-Version': '2021-05-13',
-        'Content-Type': 'application/json',
-        }
-
-        r = requests.post(url, headers=headers)
-        db_json = r.json()
-
-        dbid_list = []
-        for i in range(len(db_json['results'])):
-            id = db_json['results'][i]['properties']['データベースID']['title'][0]['plain_text']
-            dbid_list.append(id)
-
-        return dbid_list
-
+        # パース部
+        self.dbid_list = []
+        for i in range(len(self.r['results'])):
+            self.id = self.r['results'][i]['properties']['データベースID']['title'][0]['plain_text']
+            self.dbid_list.append(self.id)
+        return self.dbid_list
+    
+    # ユーザー名リストを取得
     def get_user_name_list(self, db_id_list:list):
-        user_name_list, flag_list = [], []
+        self.user_name_list, self.flag_list = [], []
         for db_id in db_id_list:
-            user_info, flag = self.get_db_info(db_id)
-            user_name_list.append(user_info['name'])
-            flag_list.append(flag)
-        return user_name_list, flag_list
+            self.user_info, self.flag = self.get_db_info(db_id)
+            self.user_name_list.append(self.user_info['name'])
+            self.flag_list.append(self.flag)
+        return self.user_name_list, self.flag_list
+    
+    # 指定したDBIDに対応したDBを参照し、情報を取得
+    def get_db_info(self, db_id:str):
+        NOTION_ACCESS_TOKEN = self.conf['database_loading']['NOTION_ACCESS_TOKEN']
+        NOTION_DATABASE_ID = db_id
+        self.client = Client(auth=NOTION_ACCESS_TOKEN)
+        self.r = self.client.databases.query(NOTION_DATABASE_ID)
 
+        # パース部
+        self.mailinfo_dict, self.flag = self._get_personal_info(self.r)
+        return self.mailinfo_dict, self.flag
+    
+    # db_infoのjsonパーサー
     def _get_personal_info(self, db_json:str):
 
         self.flag = True
