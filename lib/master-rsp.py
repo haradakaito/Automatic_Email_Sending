@@ -1,5 +1,4 @@
 import random
-import time
 from threading import Thread
 from _schedule import Schedule
 from _database_loading import GetProperties

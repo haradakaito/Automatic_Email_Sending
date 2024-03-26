@@ -1,8 +1,6 @@
 import schedule
 import random
-import os
 import time
-import shutil
 from threading import Thread
 from _schedule import Schedule
 from _database_loading import GetProperties
