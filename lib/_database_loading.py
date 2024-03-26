@@ -1,5 +1,6 @@
 from notion_client import Client
 import json
+import datetime as dt
 from pathlib import Path
 
 class GetProperties:
@@ -70,3 +71,15 @@ class GetProperties:
 
         self.mailinfo_dict = {'name':self.name, 'grade':self.grade, 'email':self.email, 'password':self.password, 'progress':self.progress, 'progress_map':self.progress_map, 'signature':self.signature, 'other':self.other}
         return self.mailinfo_dict, self.flag
+    
+    # 指定したプロパティを更新
+    def update_property(self, db_id:str, property_name:str, new_contents:str):
+        NOTION_ACCESS_TOKEN = self.conf['master']['NOTION_ACCESS_TOKEN']
+        client = Client(auth=NOTION_ACCESS_TOKEN)
+        r = client.databases.query(db_id)
+        try:
+            client.pages.update(page_id=r['results'][0]['id'], properties={property_name: {'rich_text': [{'type':'text', 'text':{'content':{new_contents}}}]}})
+        except:
+            error_time = dt.datetime.now().strftime('[%Y/%m/%d] %H:%M')
+            print(f'{error_time} NOTION_ERROR')
+        
