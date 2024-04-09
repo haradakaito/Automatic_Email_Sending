@@ -2,8 +2,6 @@
 ## 0. システム概要図
 ![画像1](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/6d277790-c7c0-4ecf-a486-e532dde7f4d6)
 
-
-
 ## 1. 仕様定義
 - 毎日20:00に自動でメールを送信する
 - GoogleCalendarで管理されているユーザーの予定を参照し，メール本文に記載する
