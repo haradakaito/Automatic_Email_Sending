@@ -34,3 +34,6 @@ $ sudo bash install.sh
 
 ## 3. ユーザー追加方法
 ![ユーザー追加方法](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/2e5bba75-fbf8-439d-8d94-368556518977)
+
+## Qiita記事
+https://qiita.com/muumin_0525/items/6d7e81651d3b37e11183
