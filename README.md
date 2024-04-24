@@ -3,24 +3,10 @@
 ![システム概要_ver1 1 0](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/5c1dc72e-51ff-4c23-b7ef-180dad5381ed)
 
 
-## 1. 仕様定義
-- 毎日20:00に自動でメールを送信する
-- GoogleCalendarで管理されているユーザーの予定を参照し，メール本文に記載する
-- Notionで管理されている内容を参照し，メール本文に記載する
-- Notionで管理されている情報を参照し，送信アドレスを取得する
-- メール送信の旨をLINEで通知する
-- ユーザー追加による拡張が可能
-- 一つのプログラムで全ユーザー分送信が可能
-- Windows/RaspberryPiOSで動作可能
-## 2. 初期設定
+## 1. システムフロー
 
-### 1. Google Calendarの非公開ical URLを取得  
-configファイル内URLを保存(config/credentials.json)
-### 2. Notion API 取得  
-### 3. Line Notify API 取得  
-### 4. configファイル編集  
-config/config.jsonファイルを以下の項目を更新  
-「LineNotify関連・NotionAPI関連・所属・日報送信先」
+### メール送信部
+![メール送信までの流れ](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/5f38612f-2aef-4e33-9018-481312066f3c)
 
 ### 5. 定期実行プログラム開始
 ###  Windows
