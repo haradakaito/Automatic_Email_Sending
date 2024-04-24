@@ -42,7 +42,8 @@ Notionを用いることで，NotionのUIでデータベース操作が可能と
 ![メール送信までの流れ](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/3d5c0fc4-2236-4485-a6a9-5de3d2f67b61)
 
 メール送信は，SMTPサーバーのホスト名とポート番号を指定し，サーバーを指定する．(Outlookで送信する場合は，ポート番号587を指定する．)  
-その後，STARTTLS方式
+その後，STARTTLS方式と呼ばれる暗号化通信に対応しているのかを確認する．  
+STARTLTS通信を確立し，サーバーにログインした後，ユーザーのメールを指定したドメインに対して送信する．  
 
 ### 4. 定期プログラムの実行方法
 ###  Windows
