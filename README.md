@@ -12,7 +12,7 @@
 ### 1.3 メール送信機能
 ![メール送信までの流れ](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/3d5c0fc4-2236-4485-a6a9-5de3d2f67b61)
 
-### 5. 定期実行プログラム開始
+### 2. 定期プログラムの実行方法
 ###  Windows
 ```
 $ pip install -r requirements.txt
