@@ -2,6 +2,8 @@
 ## 0. システム概要図
 ![システム概要_ver1 1 0](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/5c1dc72e-51ff-4c23-b7ef-180dad5381ed)
 
+### 0.1 仕様定義
+
 ## 1. システムフロー
 ### 1.1 LINE通知機能
 ![LINE通知](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/bab1d95e-8a61-40fc-b6d7-c0b7abb24e23)
