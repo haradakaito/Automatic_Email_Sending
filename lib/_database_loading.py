@@ -29,8 +29,7 @@ class GetProperties:
     conf_path = current_dir / '../config/config.json'
     conf = json.load(open(conf_path, 'r', encoding='utf-8'))
 
-    # 全登録ユーザーのデータベースIDリストを取得
-    def get_dbid_list(self):
+    def get_dbid_list(self) -> list:
         """
         全登録ユーザーのデータベースIDリストを取得
 
@@ -61,7 +60,7 @@ class GetProperties:
         return self.dbid_list
     
     # ユーザー名リストを取得
-    def get_user_name_list(self, db_id_list:list):
+    def get_user_name_list(self, db_id_list:list) -> list:
         """
         ユーザー名リストを取得
 
@@ -84,7 +83,7 @@ class GetProperties:
         return self.user_name_list, self.flag_list
     
     # 指定したDBIDに対応したDBを参照し、情報を取得
-    def get_db_info(self, db_id:str):
+    def get_db_info(self, db_id:str) -> dict:
         """
         指定したDBIDに対応したDBを参照し、情報を取得
 
@@ -103,7 +102,6 @@ class GetProperties:
         NOTION_DATABASE_ID = db_id
         self.client = Client(auth=NOTION_ACCESS_TOKEN)
         self.r = self.client.databases.query(NOTION_DATABASE_ID)
-
         # パース部
         try:
             self.mailinfo_dict, self.flag = self._get_personal_info(self.r)
@@ -114,20 +112,21 @@ class GetProperties:
     
     # db_infoのjsonパーサー
     def _get_personal_info(self, db_json:str):
-        self.name = db_json['results'][len(db_json['results'])-1]['properties']['苗字']['title'][0]['plain_text']
+        self.parent_node = db_json['results'][len(db_json['results'])-1]['properties']
+        self.name = self.parent_node['苗字']['title'][0]['plain_text']
         property_list = ['学年', '静大メール', 'パスワード', '進捗項目', '進捗マップ', '署名', '自由記入欄']
-        if not any([len(db_json['results'][len(db_json['results'])-1]['properties'][p]['rich_text'])==0 for p in property_list]): # 全プロパティが空でない
-            self.grade = db_json['results'][len(db_json['results'])-1]['properties']['学年']['rich_text'][0]['plain_text']
-            self.email = db_json['results'][len(db_json['results'])-1]['properties']['静大メール']['rich_text'][0]['plain_text']
-            self.password = db_json['results'][len(db_json['results'])-1]['properties']['パスワード']['rich_text'][0]['plain_text']
-            self.progress = db_json['results'][len(db_json['results'])-1]['properties']['進捗項目']['rich_text'][0]['plain_text']
-            self.progress_map = db_json['results'][len(db_json['results'])-1]['properties']['進捗マップ']['rich_text'][0]['plain_text']
-            self.signature = db_json['results'][len(db_json['results'])-1]['properties']['署名']['rich_text'][0]['plain_text']
-            self.other = db_json['results'][len(db_json['results'])-1]['properties']['自由記入欄']['rich_text'][0]['plain_text']
-            self.mailinfo_dict = {'name':self.name, 'grade':self.grade, 'email':self.email, 'password':self.password, 'progress':self.progress, 'progress_map':self.progress_map, 'signature':self.signature, 'other':self.other}
+        if not any([len(self.parent_node[p]['rich_text'])==0 for p in property_list]): # 全プロパティが空でない
+            self.grade = self.parent_node['学年']['rich_text'][0]['plain_text']
+            self.email = self.parent_node['静大メール']['rich_text'][0]['plain_text']
+            self.password = self.parent_node['パスワード']['rich_text'][0]['plain_text']
+            self.progress = self.parent_node['進捗項目']['rich_text'][0]['plain_text']
+            self.progress_map = self.parent_node['進捗マップ']['rich_text'][0]['plain_text']
+            self.signature = self.parent_node['署名']['rich_text'][0]['plain_text']
+            self.other = self.parent_node['自由記入欄']['rich_text'][0]['plain_text']
+            self.mailinfo_dict = {'name':self.name,'grade':self.grade,'email':self.email,'password':self.password,'progress':self.progress,'progress_map':self.progress_map,'signature':self.signature,'other':self.other}
             self.flag = True
         else:
-            self.mailinfo_dict = {'name':'', 'grade':'', 'email':'', 'password':'', 'progress':'', 'progress_map':'', 'signature':'', 'other':''}
+            self.mailinfo_dict = {'name':'','grade':'','email':'','password':'','progress':'','progress_map':'','signature':'','other':''}
             self.flag = False
                 
         return self.mailinfo_dict, self.flag
