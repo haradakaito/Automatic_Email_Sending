@@ -5,7 +5,10 @@
 
 ## 1. システムフロー
 
-### メール送信部
+### LINE通知機能
+![LINE通知](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/bab1d95e-8a61-40fc-b6d7-c0b7abb24e23)
+
+### メール送信機能
 ![メール送信までの流れ](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/3d5c0fc4-2236-4485-a6a9-5de3d2f67b61)
 
 
