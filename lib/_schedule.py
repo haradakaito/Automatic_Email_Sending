@@ -25,6 +25,7 @@ class Schedule:
         >>> print(f'本日のGMim : {event.is_today_event(event_name="GMim")}')
         >>> print(f'本日のGMts : {event.is_today_event(event_name="GMts")}')
     """
+
     def __init__(self):
         self.calendar = Calendar()
 
@@ -41,6 +42,7 @@ class Schedule:
             bool
                 本日が休日の場合はTrue、平日の場合はFalse
         """
+
         # 祝日かどうか
         is_holiday = jpholiday.is_holiday(dt.date.today())
         # 土日かどうか
@@ -61,6 +63,7 @@ class Schedule:
             bool
                 [スケジュール名]がある場合はTrue、ない場合はFalse
         """
+        
         today_schedule = self.calendar.get_today_events()
         for event in today_schedule:
             if schedule_name in event[1]:
