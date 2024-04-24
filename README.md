@@ -6,7 +6,8 @@
 ## 1. システムフロー
 
 ### メール送信部
-![メール送信までの流れ](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/5f38612f-2aef-4e33-9018-481312066f3c)
+![メール送信までの流れ](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/3d5c0fc4-2236-4485-a6a9-5de3d2f67b61)
+
 
 ### 5. 定期実行プログラム開始
 ###  Windows
