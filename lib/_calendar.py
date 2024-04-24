@@ -29,7 +29,7 @@ class Calendar:
     def _parse_ical(self, ical):
         return cl.from_ical(ical)
     
-    def get_user_plan(self, user_name) -> list:
+    def get_next_plan_list(self, user_name) -> list:
         """
         ユーザーの予定を取得する
 
@@ -64,6 +64,6 @@ class Calendar:
         else:
             return src
 
-if __name__ == "__main__":
-    cal = Calendar()
-    cal.get_next_plan_list("島田")
+# if __name__ == "__main__":
+#     cal = Calendar()
+#     cal.get_next_plan_list("島田")
