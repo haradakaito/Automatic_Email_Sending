@@ -82,9 +82,7 @@ class Contents:
         progress += '本日は'
         progress += self.user_info['progress']
         progress += 'を行いました.'
-
         progress += self.user_info['other']
-
         return progress
     
     def _create_progress_map(self):
@@ -108,7 +106,6 @@ class Contents:
         except Exception as e:
             print(e)
             plan = ''
-
         return plan
     
     def _convert_plan_time(self, plan_time):

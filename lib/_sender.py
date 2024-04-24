@@ -35,11 +35,11 @@ class Sender:
         >>> sender = Sender(from_email, to_email, user_name, password, subject, body)
         >>> sender.send()
     """
-
+    
+    # 設定ファイルの読み込み
     current_dir = Path(__file__).resolve().parent
     conf_path = current_dir / '../config/config.json'
     conf = json.load(open(conf_path, 'r', encoding='utf-8'))
-
     # クラス変数
     smtp_host = conf['sender']['smtp_host']  # SMTPサーバーのホスト名
     smtp_port = conf['sender']['smtp_port']  # SMTPサーバーのポート番号（Outlookの場合は587）
@@ -52,20 +52,17 @@ class Sender:
         self.body = body  # 本文
 
     def send(self):
-        
         #メッセージ内容
         msg = message.EmailMessage()
         msg['From'] = self.from_email
         msg['To'] = self.to_email
         msg['Subject'] = self.subject
         msg.set_content(self.body)
-
         # サーバーとのやりとり
         server = smtplib.SMTP(self.smtp_host, self.smtp_port)
         server.ehlo()
         server.starttls()
         server.ehlo()
-
         try:
             server.login(self.user_name, self.password)
             server.send_message(msg)
