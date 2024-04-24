@@ -31,6 +31,13 @@
 ### 3.2 メール情報取得
 ![メール情報取得までの流れ](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/f7cdacd4-aad7-4669-8008-e14ab2261e6f)
 
+ユーザーの情報を管理するデータベースにはNotionを使用した．  
+NotionにはNotionのデータベースを操作できるAPIが提供されており，実装コストが低くなると考えた．  
+Notionを用いることで，NotionのUIでデータベース操作が可能となり，フロントエンド開発の手間が省けると考えた．  
+メール送信は，各ユーザーをマルチスレッドで実行する．  
+各スレッドで，NotionAPIを用いてメール作成/送信に必要な情報を取得する．  
+取得した情報はjson形式で渡されるため，それらを解析し，必要な情報を辞書型で送信用の関するに渡す．
+
 ### 3.3 メール送信機能
 ![メール送信までの流れ](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/3d5c0fc4-2236-4485-a6a9-5de3d2f67b61)
 
