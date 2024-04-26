@@ -1,8 +1,11 @@
 # 定時メール自動送信プログラム
-## 1. システム概要図
+## 1 システム概要図
 ![システム概要_ver1 1 0](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/5c1dc72e-51ff-4c23-b7ef-180dad5381ed)
 
-## 2. 仕様定義
+### 2. ファイル構成
+![ファイル構成図_v1 1 1](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/f5035bbe-5c3b-41f7-91bf-6bb8142c32f7)
+
+## 3. 仕様定義
 - **毎日メールを送信する**  
   ・毎日とは言っても，休祝日に送信するのは健全ではない．そのため，**休祝日は送信をしない**こととする．  
   ・ユーザー全員が全く同じ時間に送信するのは違和感がある．そのため，**ユーザーごとに送信を行う時間を変える**こととする．  
@@ -22,8 +25,8 @@
 - **動作環境**  
   ・**Windows**もしくは，**RaspberryPi OS**で動作する．  
   
-## 3. システムフロー
-### 3.1 LINE通知機能
+## 4. システムフロー
+### 4.1 LINE通知機能
 ![LINE通知](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/bab1d95e-8a61-40fc-b6d7-c0b7abb24e23)
 
 ユーザーに対する通知機能を実装するために**LINE Notifyを使用**した．  
@@ -31,7 +34,7 @@
 また，LINENotifyに与える通知内容を作成する段階で，**データベースから全ユーザーの名前を取得**している．  
 更に，**各ユーザーに対して設定されたランダムな送信時刻を対応させたうえで，通知メッセージを作成**する．  
 
-### 3.2 メール情報取得
+### 4.2 メール情報取得
 ![メール情報取得までの流れ](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/f7cdacd4-aad7-4669-8008-e14ab2261e6f)
 
 ユーザーの情報を管理するデータベースにはNotionを使用した．  
@@ -41,14 +44,14 @@ Notionを用いることで，**NotionのUIでデータベース操作が可能�
 各スレッドで，**NotionAPIを用いてメール作成/送信に必要な情報を取得**する．  
 取得した**情報はjson形式で渡される**ため，それらを解析し，必要な情報を辞書型で送信用の関数に渡す．
 
-### 3.3 メール送信機能
+### 4.3 メール送信機能
 ![メール送信までの流れ](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/3d5c0fc4-2236-4485-a6a9-5de3d2f67b61)
 
 メール送信は，**SMTPサーバーのホスト名とポート番号でサーバーを指定**する．(Outlookで送信する場合は，ポート番号587を指定する．)  
 その後，**STARTTLS方式と呼ばれる暗号化通信に対応しているのかを確認**する．  
 **STARTLTS通信を確立**し，**サーバーにログイン**した後，ユーザーの**メールを指定したドメインに対して送信**する．  
 
-### 4. 定期プログラムの実行方法
+### 5. 定期プログラムの実行方法
 ###  Windows
 ```
 $ pip install -r requirements.txt
@@ -59,7 +62,7 @@ $ python lib/master-win.py
 $ sudo bash install.sh
 ```
 
-## 5. ユーザー追加方法
+## 6. ユーザー追加方法
 ![ユーザー追加方法](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/2e5bba75-fbf8-439d-8d94-368556518977)
 
 ## Qiita記事
