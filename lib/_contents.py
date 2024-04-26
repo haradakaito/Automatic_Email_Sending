@@ -1,126 +1,165 @@
-import datetime as dt
 import json
+from datetime import datetime
 from pathlib import Path
-from _calendar import Calendar
 
 class Contents:
+
     """
-        Contents
-        ===
-        メール本文作成クラス
+        メールの件名や本文の作成クラス
 
-        Parameters:
-        ---
-        user_name : str
-            メール作成者の名前
-        user_grade : str
-            メール作成者の学年
+        Parameters
+        ----------
+        None
 
-        Methods:
-        ---
-        create_subject()
-            件名作成
-        create_body()
-            本文作成
+        Attributes
+        ----------
+        AFFILIATION : str
+            所属名
+        
+        Methods
+        -------
+        create_subject() -> str
+            件名の作成
+        
+        create_first(user_info) -> str
+            本文の冒頭部分の作成
 
-        Usage:
-        >>> contents = Contents(**user_info)
-        >>> subject = contents.create_subject()
-        >>> body = contents.create_body()
+        create_progress(user_info) -> str
+            本文の進捗部分の作成
+
+        create_progress_map(user_info) -> str
+            本文の進捗マップ部分の作成
+        
+        create_event(user_event) -> str
+            本文の予定部分の作成
+        
+        create_signature(user_info) -> str
+            本文の署名部分の作成
+
+        _convert_event_time(event_time) -> str
+            予定の日時を整形する    
     """
 
+    # 設定ファイルの読み込み
     current_dir = Path(__file__).resolve().parent
     conf_path = current_dir / '../config/config.json'
-
-    def __init__(self, **user_info):
-        self.user_info = user_info
-        self.calendar = Calendar()  # カレンダーを取得するクラス
-
-    def create_subject(self):
-        """
-            メール件名作成
-
-            本日の進捗について(YYYY/MM/DD)
-        """
-        self.subject  = '本日の進捗について'
-        self.subject += dt.datetime.now().strftime('(%Y/%m/%d)')
-        return self.subject
-
-    def create_body(self):
-        """
-            本文作成
-        """
-        # 最初の名乗り
-        self.first = self._create_first()
-        # 実施事項
-        self.progress = self._create_progress()
-        # 進捗マップ
-        self.progress_map = self._create_progress_map()
-        # 今後の予定
-        self.plan = self._create_plan()
-        # 署名
-        self.signature = self._create_signature()
-        # 本文作成
-        self.body = self.first + self.progress + "\n\n" + self.progress_map + "\n\n" + self.plan + "\n\n" + self.signature
-        return self.body
+    conf = json.load(open(conf_path, 'r', encoding='utf-8'))
     
-    def _create_first(self):
+    # クラス変数
+    AFFILIATION = conf['contents']['AFFILIATION']
+
+    def create_subject(self) -> str:
         """
-            最初の言葉の作成
+            件名の作成
+
+            Parameters
+            ----------
+            None
+
+            Returns
+            -------
+            subject : str
+                件名
         """
-        conf = json.load(open(self.conf_path, 'r', encoding='utf-8'))
-        self.affiliation = conf['contents']['affiliation']
-        self.first  = f'{self.affiliation}の皆様\n\n'
-        self.first += f'{self.affiliation}{self.user_info["grade"]}の{self.user_info["name"]}です.\n'
-        return self.first
-    
-    def _create_progress(self):
+        subject  = '本日の進捗について'
+        subject += datetime.now().strftime('(%Y/%m/%d)')
+        return subject
+
+    def create_first(self, user_info:dict) -> str:
         """
-            実施事項作成
+            本文の冒頭部分の作成
+
+            Parameters
+            ----------
+            user_info : dict
+                ユーザ情報
+
+            Returns
+            -------
+            first : str
+                本文の冒頭部分
+        """
+        first  = f'{self.AFFILIATION}の皆様\n\n'
+        first += f'{self.AFFILIATION}{user_info["grade"]}の{user_info["name"]}です.\n\n'
+        return first
+
+    def create_progress(self, user_info:dict) -> str:
+        """
+            本文の進捗部分の作成
+
+            Parameters
+            ----------
+            user_info : dict
+                ユーザ情報
+
+            Returns
+            -------
+            progress : str
+                本文の進捗部分
         """
         progress = '本日の進捗を共有させていただきます.\n'
-        progress += '本日は'
-        progress += self.user_info['progress']
-        progress += 'を行いました.'
-        progress += self.user_info['other']
+        progress += '本日は，' + user_info['progress'] + ' を行いました.'
+        progress += user_info['other']
         return progress
-    
-    def _create_progress_map(self):
+
+    def create_progress_map(self, user_info:dict) -> str:
         """
-            進捗マップ作成
+            本文の進捗マップ部分の作成
+
+            Parameters
+            ----------
+            user_info : dict
+                ユーザ情報
+
+            Returns
+            -------
+            progress_map : str
+                本文の進捗マップ部分
         """
         progress_map  = '------◎本日実施，○実施中，●未実施，★完了------\n'
-        progress_map += self.user_info['progress_map']
+        progress_map += user_info['progress_map']
         return progress_map
-    
-    def _create_plan(self):
-        """
-            今後の予定作成
-        """
-        try:
-            plan_list = self.calendar.get_next_plan_list(self.user_info['name'])
-            plans = [f'{self._convert_plan_time(plan[0])}\t: {plan[1]}\n' for plan in plan_list]
-            plan = '-----今後の予定・その他-----\n'
-            plan += ''.join(plans)
-            plan += '------------------------------\n'
-        except Exception as e:
-            print(e)
-            plan = ''
-        return plan
-    
-    def _convert_plan_time(self, plan_time):
-        """
-            予定の時間を変換
-        """
-        if 'T' in plan_time:
-            plan_time  = plan_time.replace('T', ' ')
-            plan_time  = plan_time[:-9]
-        else:
-            plan_time += '\t'
-        return plan_time
 
-    def _create_signature(self):
+    def create_event(self, user_event:list) -> str:
         """
-            署名作成
+            本文の予定部分の作成
+
+            Parameters
+            ----------
+            user_event : list
+                ユーザ情報
+
+            Returns
+            -------
+            event : str
+                本文の予定部分
         """
-        return self.user_info['signature']
+        events = [f'{self._convert_event_time(tmp[0])}\t: {tmp[1]}\n' for tmp in user_event]
+        event = '-----今後の予定・その他-----\n'
+        event += ''.join(events)
+        event += '------------------------------\n'
+        return event
+
+    def _convert_event_time(self, event_time:str) -> str:
+        if 'T' in event_time:
+            event_time  = event_time.replace('T', ' ')
+            event_time  = event_time[:-9]
+        else:
+            event_time += '\t'
+        return event_time
+
+    def create_signature(self, user_info:dict) -> str:
+        """
+            本文の署名部分の作成
+
+            Parameters
+            ----------
+            user_info : dict
+                ユーザ情報
+
+            Returns
+            -------
+            signature : str
+                本文の署名部分
+        """
+        return user_info['signature']

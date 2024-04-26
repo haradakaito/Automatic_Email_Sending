@@ -1,71 +1,60 @@
-from _calendar import Calendar
-import jpholiday
-import datetime as dt
+from datetime import datetime, timedelta, timezone
 
 class Schedule:
+    
     """
-        Schedule
-        ===
-        スケジュールをチェックするクラス
+        スケジュールを管理するクラス
 
         Parameters
-        ---
+        ----------
         None
-        
+
+        Attributes
+        ----------
+        None
+
         Methods
-        ---
-        is_today_schedule()
-            本日のイベントを取得
-            
-        Usage
-        ---
-        ```python
-        >>> event = MineLabEvent()
-        >>> print(f'本日のWR : {event.is_today_event(event_name="WR")}')
-        >>> print(f'本日のGMim : {event.is_today_event(event_name="GMim")}')
-        >>> print(f'本日のGMts : {event.is_today_event(event_name="GMts")}')
+        -------
+        ical_parse(all_events, period:list) -> list
+            icalファイルのパーサー
     """
 
-    def __init__(self):
-        self.calendar = Calendar()
-
-    def is_today_holiday(self) -> bool:
+    # icalファイルのパーサー
+    def ical_parse(self, all_events, period:list):
         """
-            本日が休日かどうかを判定
+            icalファイルのパーサー
 
             Parameters
-            ---
-            None
+            ----------
+            all_events : list
+                icalファイルの情報
+            period : list
+                期間
 
             Returns
-            ---
-            bool
-                本日が休日の場合はTrue、平日の場合はFalse
+            -------
+            event_list : list
+                予定リスト
         """
-
-        # 祝日かどうか
-        is_holiday = jpholiday.is_holiday(dt.date.today())
-        # 土日かどうか
-        is_weekend = (dt.datetime.now().weekday() == 5) or (dt.datetime.now().weekday() == 6)
-        return is_holiday or is_weekend
-
-    def is_today_schedule(self, schedule_name:str) -> bool:
-        """
-            本日特定のイベントがあるかどうかを判定
-
-            Parameters
-            ---
-            schedule_name : str
-                スケジュール名
-
-            Returns
-            ---
-            bool
-                [スケジュール名]がある場合はTrue、ない場合はFalse
-        """
-        
-        today_schedule = self.calendar.get_today_events()
-        for event in today_schedule:
-            if schedule_name in event[1]:
-                return True
-        return False
+        today_dt = datetime.now().replace(tzinfo=timezone.utc).date()
+        start_dt, end_dt = today_dt+timedelta(days=period[0]), today_dt+timedelta(days=period[1])
+        events = [tmp for tmp in all_events if start_dt <= self._datetime_to_date(tmp.get('DTSTART').dt) <= end_dt]
+        events = sorted(events, key=lambda x: self._datetime_to_date(x.get('DTSTART').dt))
+        event_list = []
+        for e in events:
+            event_time = self._change_timezone(e.get('DTSTART').dt).strftime('%Y/%m/%d %H:%M')
+            event_name = str(e.get('SUMMARY'))
+            event_list.append((event_time, event_name))
+        return event_list
+    
+    def _change_timezone(self, src):
+        if isinstance(src, datetime):
+            return src.astimezone(timezone(timedelta(hours=9)))
+        else:
+            return src
+    
+    def _datetime_to_date(self, src):
+        if isinstance(src, datetime):
+            return src.date()
+        else:
+            return src
