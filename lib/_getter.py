@@ -206,7 +206,7 @@ class Getter:
             return None
     
     # 全ユーザーの件名を取得
-    def all_get_user_subject(self, all_db_info:list) -> list:
+    def get_all_user_subject(self, all_db_info:list) -> list:
         """
             全ユーザーの件名を取得
 

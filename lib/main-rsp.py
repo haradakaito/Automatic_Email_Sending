@@ -23,7 +23,7 @@ def main():
         # 全員のデータベースID
         all_db_info = getter.get_all_db_info()
         # 全員の件名
-        all_user_subject = getter.all_get_user_subject(all_db_info)
+        all_user_subject = getter.get_all_user_subject(all_db_info)
         # 全員の予定
         all_user_event = getter.get_all_user_event(all_db_info)
         # 全員の本文

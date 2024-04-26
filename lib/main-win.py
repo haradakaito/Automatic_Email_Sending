@@ -15,7 +15,7 @@ def main():
         try:
             # 全ユーザーの情報を事前に読み込んでおく
             all_db_info = getter.get_all_db_info()
-            all_user_subject = getter.all_get_user_subject(all_db_info)
+            all_user_subject = getter.get_all_user_subject(all_db_info)
             all_user_event = getter.get_all_user_event(all_db_info)
             all_user_body = getter.get_all_user_body(all_db_info, all_user_event)
             
