@@ -5,11 +5,11 @@ from threading import Thread
 from datetime import datetime
 
 from lib._getutils import Getutils
-from _sender import Sender
+from lib._sendutils import Sendutils
 
 def main():
     getutils = Getutils()
-    sender = Sender()
+    sendutils = Sendutils()
     # 平日のみ実行
     if getutils.today_is_holiday() == False:
         try:
@@ -22,13 +22,13 @@ def main():
             # 送信時刻を設定し，全員に通知メッセージを送信
             all_send_name = [db_info['name'] for db_info in all_db_info]
             all_sleep_time = getutils.get_sleep_time(len(all_send_name))
-            sender.send_notify_all(all_send_name, all_sleep_time)
+            sendutils.send_notify_all(all_send_name, all_sleep_time)
             
             # マルチスレッドでメール送信
             all_send_util = [[db_info['password'], db_info['email']] for db_info in all_db_info]
             threads = []
             for i in range(len(all_db_info)):
-                thread = Thread(target=sender.send_mail, args=(all_send_util[i], all_user_subject[i], all_user_body[i], all_sleep_time[i]))
+                thread = Thread(target=sendutils.send_mail, args=(all_send_util[i], all_user_subject[i], all_user_body[i], all_sleep_time[i]))
                 threads.append(thread)
             for t in threads:
                 t.start()
