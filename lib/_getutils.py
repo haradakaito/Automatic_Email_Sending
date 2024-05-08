@@ -11,7 +11,7 @@ from _database import Database
 from _schedule import Schedule
 from _contents import Contents
 
-class Getter:
+class Getutils:
     """
         データベースの情報を取得するクラス
 

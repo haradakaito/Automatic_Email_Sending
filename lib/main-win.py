@@ -4,24 +4,24 @@ import time
 from threading import Thread
 from datetime import datetime
 
-from _getter import Getter
+from lib._getutils import Getutils
 from _sender import Sender
 
 def main():
-    getter = Getter()
+    getutils = Getutils()
     sender = Sender()
     # 平日のみ実行
-    if getter.today_is_holiday() == False:
+    if getutils.today_is_holiday() == False:
         try:
             # 全ユーザーの情報を事前に読み込んでおく
-            all_db_info = getter.get_all_db_info()
-            all_user_subject = getter.get_all_user_subject(all_db_info)
-            all_user_event = getter.get_all_user_event(all_db_info)
-            all_user_body = getter.get_all_user_body(all_db_info, all_user_event)
+            all_db_info = getutils.get_all_db_info()
+            all_user_subject = getutils.get_all_user_subject(all_db_info)
+            all_user_event = getutils.get_all_user_event(all_db_info)
+            all_user_body = getutils.get_all_user_body(all_db_info, all_user_event)
             
             # 送信時刻を設定し，全員に通知メッセージを送信
             all_send_name = [db_info['name'] for db_info in all_db_info]
-            all_sleep_time = getter.get_sleep_time(len(all_send_name))
+            all_sleep_time = getutils.get_sleep_time(len(all_send_name))
             sender.send_notify_all(all_send_name, all_sleep_time)
             
             # マルチスレッドでメール送信
