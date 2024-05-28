@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from email import message
 from pathlib import Path
 
-class Sender:
+class Sendutils:
 
     """
         通知を送信するクラス
