@@ -265,3 +265,39 @@ class Getutils:
             return body
         except:
             return None
+
+    # プロパティを更新
+    def _update_property(self, db_id:str, property_name:str, new_contents:str) -> None:
+        """
+            指定したプロパティを更新
+
+            Parameters
+            ----------
+            db_id : str
+                データベースID
+            
+            property_name : str
+                プロパティ名
+
+            new_contents : str
+                更新する内容
+
+            Returns
+            -------
+            None
+        """
+
+        r = self.client.databases.query(db_id)
+        self.client.pages.update(page_id=r['results'][0]['id'],
+                                    properties={
+                                        property_name: {
+                                            'rich_text': [
+                                                {
+                                                    'type':'text', 'text':{
+                                                        'content':{new_contents}
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    )
