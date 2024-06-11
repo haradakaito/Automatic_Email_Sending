@@ -1,39 +1,30 @@
-from datetime import datetime, timedelta, timezone
+import json
+import requests
 
-class Schedule:
-    """
-        スケジュールを管理するクラス
+from pathlib   import Path
+from datetime  import datetime, timedelta, timezone
+from icalendar import Calendar
 
-        Parameters
-        ----------
-        None
+class GoogleCalendarTools:
 
-        Attributes
-        ----------
-        None
+    # 設定ファイルの読み込み
+    current_dir = Path(__file__).resolve().parent
+    conf_path   = current_dir / '../config/config.json'
+    conf        = json.load(open(conf_path, 'r', encoding='utf-8'))
+    # クラス変数
+    ICAL_URL = conf['calendar']['ICAL_URL']
 
-        Methods
-        -------
-        ical_parse(all_events, period:list) -> list
-            icalファイルのパーサー
-    """
-    # icalファイルのパーサー
-    def ical_parse(self, all_events, period:list):
-        """
-            icalファイルのパーサー
+    # ユーザーの1週間分の予定を取得
+    def get_event(self, username:str) -> list:
+        ical = requests.get(self.ICAL_URL)
+        ical.raise_for_status()
+        ical = Calendar.from_ical(ical.text)
+        all_events      = [tmp for tmp in ical.walk('VEVENT')]
+        all_user_events = [tmp for tmp in all_events if username in tmp.get('SUMMARY')]
+        user_event = self._ical_parse(all_user_events, period=[1, 8])
+        return user_event
 
-            Parameters
-            ----------
-            all_events : list
-                icalファイルの情報
-            period : list
-                期間
-
-            Returns
-            -------
-            event_list : list
-                予定リスト
-        """
+    def _ical_parse(self, all_events, period:list):
         start_dt = datetime.now().replace(tzinfo=timezone.utc).date() + timedelta(days=period[0])
         end_dt   = datetime.now().replace(tzinfo=timezone.utc).date() + timedelta(days=period[1])
         events   = [tmp for tmp in all_events if start_dt <= self._datetime_to_date(tmp.get('DTSTART').dt) <= end_dt]
