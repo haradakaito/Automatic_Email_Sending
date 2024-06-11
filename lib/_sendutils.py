@@ -84,7 +84,7 @@ class Sendutils:
         message  = f'{datetime.today().strftime('%Y/%m/%d')}\n\n'
         message += '進捗報告送信予定時刻\n'
         message += '-----------------------------\n'
-        for user_name, sleep_time in sorted(zip(all_user_name, all_sleep_time), key=lambda x: x[1]):
+        for user_name, sleep_time in sorted(zip(all_user_name, all_sleep_time), key=lambda x: x[1]): # 送信時刻順にソート（昇順）
             send_time = datetime.now() + timedelta(seconds=sleep_time)
             message += f'{user_name}: {send_time.strftime("%H:%M")}\n'
         message += '-----------------------------'

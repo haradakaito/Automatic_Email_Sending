@@ -20,10 +20,10 @@ def main(all_db_info: list) -> None:
     all_user_event = getutils.get_all_user_event(all_db_info) # 全員の予定を取得
     all_user_body = getutils.get_all_user_body(all_db_info, all_user_event) # 全員の本文を取得
 
-    # 送信時刻を設定
-    all_sleep_time = getutils.get_sleep_time(len(all_db_info))
     # 全員に通知メッセージを送信
     all_send_name = [db_info['name'] for db_info in all_db_info]
+    # 送信時刻を設定
+    all_sleep_time = getutils.get_sleep_time(len(all_send_name))
     sendutils.send_notify_all(all_send_name, all_sleep_time)
 
     # マルチスレッドでメール送信
