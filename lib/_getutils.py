@@ -149,37 +149,6 @@ class Getutils:
         except:
             return None
     
-    # 全ユーザーの予定を取得
-    def get_all_user_event(self, all_db_info:list) -> list:
-        """
-            全ユーザーの予定を取得
-
-            Parameters
-            ----------
-            all_db_info : list
-                全ユーザーのデータベース情報
-
-            Returns
-            -------
-            list
-                全ユーザーの予定
-        """
-        all_user_event = [self._get_user_event(db_info['name']) for db_info in all_db_info if db_info['flag'] == True]
-        return all_user_event
-    
-    # ユーザーの1週間分の予定を取得
-    def _get_user_event(self, user_name:str) -> list:
-        ical = requests.get(self.ICAL_URL)
-        ical.raise_for_status()
-        ical = Calendar.from_ical(ical.text)
-        all_events      = [tmp for tmp in ical.walk('VEVENT')]
-        all_user_events = [tmp for tmp in all_events if user_name in tmp.get('SUMMARY')]
-        try:
-            user_event = self.schedule.ical_parse(all_user_events, period=[1, 8])
-            return user_event
-        except:
-            return None
-    
     # 全ユーザーの件名を取得
     def get_all_user_subject(self, all_db_info:list) -> list:
         """
@@ -208,24 +177,22 @@ class Getutils:
             return None
     
     # 全ユーザーの本文を取得
-    def get_all_user_body(self, all_user_info:list, all_user_event:list) -> list:
+    def get_all_user_body(self, all_db_info:list) -> list:
         """
             全ユーザーの本文を取得
 
             Parameters
             ----------
-            all_user_info : list
+            all_db_info : list
                 全ユーザーのデータベース情報
-
-            all_user_event : list
-                全ユーザーの予定
 
             Returns
             -------
             list
                 全ユーザーの本文
         """
-        all_user_body = [self._get_body(user_info, user_event) for user_info, user_event in zip(all_user_info, all_user_event)]
+        all_user_event = [self._get_user_event(db_info['name']) for db_info in all_db_info if db_info['flag'] == True]
+        all_user_body  = [self._get_body(user_info, user_event) for user_info, user_event in zip(all_db_info, all_user_event)]
         return all_user_body
     
     # 本文の取得
@@ -238,6 +205,19 @@ class Getutils:
             signature       = self.contents.create_signature(user_info)
             body = first + progress + "\n\n" + progress_map + "\n\n" + event + "\n\n" + signature
             return body
+        except:
+            return None
+
+    # ユーザーの1週間分の予定を取得
+    def _get_user_event(self, user_name:str) -> list:
+        ical = requests.get(self.ICAL_URL)
+        ical.raise_for_status()
+        ical = Calendar.from_ical(ical.text)
+        all_events      = [tmp for tmp in ical.walk('VEVENT')]
+        all_user_events = [tmp for tmp in all_events if user_name in tmp.get('SUMMARY')]
+        try:
+            user_event = self.schedule.ical_parse(all_user_events, period=[1, 8])
+            return user_event
         except:
             return None
     

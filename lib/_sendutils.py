@@ -92,8 +92,8 @@ class Sendutils:
 
     def _send_notify(self, message):
         self.payload = {'message': message}
-        self.headers = {'Authorization': 'Bearer ' + self.LINE_NOTIFY_TOKEN}
-        # self.headers = {'Authorization': 'Bearer ' + self.TEST_LINE_NOTIFY_TOKEN} # テスト用
+        # self.headers = {'Authorization': 'Bearer ' + self.LINE_NOTIFY_TOKEN}
+        self.headers = {'Authorization': 'Bearer ' + self.TEST_LINE_NOTIFY_TOKEN} # テスト用
         requests.post(self.LINE_NOTIFY_API, data=self.payload, headers=self.headers)
 
     # メール送信

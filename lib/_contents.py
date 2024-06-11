@@ -3,7 +3,6 @@ from datetime import datetime
 from pathlib import Path
 
 class Contents:
-
     """
         メールの件名や本文の作成クラス
 
@@ -39,7 +38,6 @@ class Contents:
         _convert_event_time(event_time) -> str
             予定の日時を整形する    
     """
-
     # 設定ファイルの読み込み
     current_dir = Path(__file__).resolve().parent
     conf_path   = current_dir / '../config/config.json'
@@ -79,7 +77,7 @@ class Contents:
             first : str
                 本文の冒頭部分
         """
-        first  = f'{self.AFFILIATION}の皆様\n\n'
+        first  =  f'{self.AFFILIATION}の皆様\n\n'
         first  += f'{self.AFFILIATION}{user_info["grade"]}の{user_info["name"]}です.\n\n'
         return first
 
@@ -97,7 +95,7 @@ class Contents:
             progress : str
                 本文の進捗部分
         """
-        progress = '本日の進捗を共有させていただきます.\n'
+        progress =  '本日の進捗を共有させていただきます.\n'
         progress += '本日は，' + user_info['progress'] + ' を行いました.'
         progress += user_info['other']
         return progress

@@ -23,10 +23,9 @@ def main(all_db_info:list) -> None:
     # 平日のみ実行
     if getutils.today_is_holiday() == False:
         # 全員のメール送信情報を取得
-        all_subject             = getutils.get_all_user_subject(all_db_info)         # 件名
-        all_event               = getutils.get_all_user_event(all_db_info)           # 予定
-        all_body                = getutils.get_all_user_body(all_db_info, all_event) # 本文
-        all_password, all_email = getutils.get_pass_email(all_db_info)               # パスワードとメールアドレス
+        all_subject             = getutils.get_all_user_subject(all_db_info)    # 件名
+        all_body                = getutils.get_all_user_body(all_db_info)       # 本文
+        all_password, all_email = getutils.get_pass_email(all_db_info)          # パスワードとメールアドレス
 
         # 全員に通知メッセージを送信
         all_sleeptime = getutils.get_all_sleeptime(all_db_info)
@@ -38,11 +37,11 @@ def main(all_db_info:list) -> None:
             thread = Thread(
                 target = sendutils.send_mail,
                 args = (
-                    all_password[i],
-                    all_email[i],
-                    all_subject[i],
-                    all_body[i],
-                    all_sleeptime[i][2]
+                    all_password[i],    # パスワード
+                    all_email[i],       # メールアドレス
+                    all_subject[i],     # 件名
+                    all_body[i],        # 本文
+                    all_sleeptime[i][2] # 送信時刻（秒数）
                     )
                 )
             threads.append(thread)
