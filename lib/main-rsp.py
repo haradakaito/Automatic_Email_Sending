@@ -1,8 +1,8 @@
 from threading import Thread
 from datetime import datetime
 
-from lib._getutils import Getutils
-from lib._sendutils import Sendutils
+from _getutils import Getutils
+from _sendutils import Sendutils
 
 def main():
     """
@@ -46,6 +46,6 @@ def main():
 
 if __name__ == '__main__':
     result = main()
-    if result != True:
+    if result == False:
         error_time = datetime.now().strftime('[%Y/%m/%d] %H:%M')
         print(f'{error_time} ERROR')

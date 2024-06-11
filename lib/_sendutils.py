@@ -51,6 +51,7 @@ class Sendutils:
 
     # クラス変数
     LINE_NOTIFY_TOKEN = conf['notification']['LINE_NOTIFY_TOKEN']
+    TEST_LINE_NOTIFY_TOKEN = conf['notification']['TEST_LINE_NOTIFY_TOKEN'] # テスト用
     LINE_NOTIFY_API = conf['notification']['LINE_NOTIFY_API']
     SMTP_HOST = conf['sender']['SMTP_HOST']
     SMTP_PORT = conf['sender']['SMTP_PORT']
@@ -100,7 +101,8 @@ class Sendutils:
 
     def _send_notify(self, message):
         self.payload = {'message': message}
-        self.headers = {'Authorization': 'Bearer ' + self.LINE_NOTIFY_TOKEN}
+        # self.headers = {'Authorization': 'Bearer ' + self.LINE_NOTIFY_TOKEN}
+        self.headers = {'Authorization': 'Bearer ' + self.TEST_LINE_NOTIFY_TOKEN} # テスト用
         requests.post(self.LINE_NOTIFY_API, data=self.payload, headers=self.headers)
 
     # メール送信

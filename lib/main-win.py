@@ -4,8 +4,8 @@ import time
 from threading import Thread
 from datetime import datetime
 
-from lib._getutils import Getutils
-from lib._sendutils import Sendutils
+from _getutils import Getutils
+from _sendutils import Sendutils
 
 def main():
     getutils = Getutils()
