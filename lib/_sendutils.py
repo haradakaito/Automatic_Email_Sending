@@ -46,16 +46,16 @@ class Sendutils:
 
     # 設定ファイルの読み込み
     current_dir = Path(__file__).resolve().parent
-    conf_path = current_dir / '../config/config.json'
-    conf = json.load(open(conf_path, 'r', encoding='utf-8'))
+    conf_path   = current_dir / '../config/config.json'
+    conf        = json.load(open(conf_path, 'r', encoding='utf-8'))
 
     # クラス変数
-    LINE_NOTIFY_TOKEN = conf['notification']['LINE_NOTIFY_TOKEN']
-    TEST_LINE_NOTIFY_TOKEN = conf['notification']['TEST_LINE_NOTIFY_TOKEN'] # テスト用
-    LINE_NOTIFY_API = conf['notification']['LINE_NOTIFY_API']
-    SMTP_HOST = conf['sender']['SMTP_HOST']
-    SMTP_PORT = conf['sender']['SMTP_PORT']
-    TO_EMAIL = conf['send_daily_report_mail']['TO_EMAIL']
+    LINE_NOTIFY_TOKEN       = conf['notification']['LINE_NOTIFY_TOKEN']
+    TEST_LINE_NOTIFY_TOKEN  = conf['notification']['TEST_LINE_NOTIFY_TOKEN'] # テスト用
+    LINE_NOTIFY_API         = conf['notification']['LINE_NOTIFY_API']
+    SMTP_HOST               = conf['sender']['SMTP_HOST']
+    SMTP_PORT               = conf['sender']['SMTP_PORT']
+    TO_EMAIL                = conf['send_daily_report_mail']['TO_EMAIL']
 
     # 全員に通知
     def send_notify_all(self, all_sleeptime:list) -> None:
@@ -76,27 +76,24 @@ class Sendutils:
 
             Notes
             -----
-            通知のメッセージ例:
-            2024/04/26
-
-
+            送信時刻が過ぎた場合は「×」を表示
         """
         message  = f'{datetime.today().strftime('%Y/%m/%d')}\n\n'
-        message += '進捗報告送信予定時刻\n'
-        message += '-----------------------------\n'
+        message  += '進捗報告送信予定時刻\n'
+        message  += '-----------------------------\n'
         for name, flag, sleeptime in sorted(all_sleeptime, key=lambda x: x[2]): # 送信時刻順にソート（昇順）
             send_time = datetime.now() + timedelta(seconds=sleeptime)
             if flag == True:
                 message += f'{name}: {send_time.strftime("%H:%M")}\n'
             else:
                 message += f'{name}: ×\n'
-        message += '-----------------------------'
+        message  += '-----------------------------'
         self._send_notify(message)
 
     def _send_notify(self, message):
         self.payload = {'message': message}
-        # self.headers = {'Authorization': 'Bearer ' + self.LINE_NOTIFY_TOKEN}
-        self.headers = {'Authorization': 'Bearer ' + self.TEST_LINE_NOTIFY_TOKEN} # テスト用
+        self.headers = {'Authorization': 'Bearer ' + self.LINE_NOTIFY_TOKEN}
+        # self.headers = {'Authorization': 'Bearer ' + self.TEST_LINE_NOTIFY_TOKEN} # テスト用
         requests.post(self.LINE_NOTIFY_API, data=self.payload, headers=self.headers)
 
     # メール送信
@@ -125,19 +122,22 @@ class Sendutils:
             -------
             None
         """
-        msg = message.EmailMessage()
-        msg['From'] = email
-        msg['To'] = self.TO_EMAIL
-        msg['Subject'] = subject
+        msg             = message.EmailMessage()
+        msg['From']     = email
+        msg['To']       = self.TO_EMAIL
+        msg['Subject']  = subject
         msg.set_content(body)
         
         # 待ち時間
         time.sleep(sleep_time)
 
-        server = smtplib.SMTP(self.SMTP_HOST, self.SMTP_PORT)
-        server.ehlo()
-        server.starttls()
-        server.ehlo()
-        server.login(password, email)
-        server.send_message(msg)
-        server.quit()
+        try: 
+            server = smtplib.SMTP(self.SMTP_HOST, self.SMTP_PORT)
+            server.ehlo()
+            server.starttls()
+            server.ehlo()
+            server.login(password, email)
+            server.send_message(msg)
+            server.quit()
+        except smtplib.SMTPAuthenticationError:
+            print('Error: SMTP認証に失敗しました (Codes:101)')

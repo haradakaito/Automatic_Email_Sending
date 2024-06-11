@@ -42,8 +42,8 @@ class Contents:
 
     # 設定ファイルの読み込み
     current_dir = Path(__file__).resolve().parent
-    conf_path = current_dir / '../config/config.json'
-    conf = json.load(open(conf_path, 'r', encoding='utf-8'))
+    conf_path   = current_dir / '../config/config.json'
+    conf        = json.load(open(conf_path, 'r', encoding='utf-8'))
     
     # クラス変数
     AFFILIATION = conf['contents']['AFFILIATION']
@@ -62,7 +62,7 @@ class Contents:
                 件名
         """
         subject  = '本日の進捗について'
-        subject += datetime.now().strftime('(%Y/%m/%d)')
+        subject  += datetime.now().strftime('(%Y/%m/%d)')
         return subject
 
     def create_first(self, user_info:dict) -> str:
@@ -80,7 +80,7 @@ class Contents:
                 本文の冒頭部分
         """
         first  = f'{self.AFFILIATION}の皆様\n\n'
-        first += f'{self.AFFILIATION}{user_info["grade"]}の{user_info["name"]}です.\n\n'
+        first  += f'{self.AFFILIATION}{user_info["grade"]}の{user_info["name"]}です.\n\n'
         return first
 
     def create_progress(self, user_info:dict) -> str:
@@ -117,7 +117,7 @@ class Contents:
                 本文の進捗マップ部分
         """
         progress_map  = '------◎本日実施，○実施中，●未実施，★完了------\n'
-        progress_map += user_info['progress_map']
+        progress_map  += user_info['progress_map']
         return progress_map
 
     def create_event(self, user_event:list) -> str:
@@ -135,9 +135,9 @@ class Contents:
                 本文の予定部分
         """
         events = [f'{self._convert_event_time(tmp[0])}\t: {tmp[1]}\n' for tmp in user_event]
-        event = '-----今後の予定・その他-----\n'
-        event += ''.join(events)
-        event += '------------------------------\n'
+        event  = '-----今後の予定・その他-----\n'
+        event  += ''.join(events)
+        event  += '------------------------------\n'
         return event
 
     def _convert_event_time(self, event_time:str) -> str:
@@ -145,7 +145,7 @@ class Contents:
             event_time  = event_time.replace('T', ' ')
             event_time  = event_time[:-9]
         else:
-            event_time += '\t'
+            event_time  += '\t'
         return event_time
 
     def create_signature(self, user_info:dict) -> str:

@@ -68,19 +68,19 @@ class Getutils:
 
     # 設定ファイルの読み込み
     current_dir = Path(__file__).resolve().parent
-    conf_path = current_dir / '../config/config.json'
-    conf = json.load(open(conf_path, 'r', encoding='utf-8'))
+    conf_path   = current_dir / '../config/config.json'
+    conf        = json.load(open(conf_path, 'r', encoding='utf-8'))
 
     # クラス変数
     NOTION_ACCESS_TOKEN = conf['master']['NOTION_ACCESS_TOKEN']
-    NOTION_MASTER_ID = conf['master']['NOTION_MASTER_ID']
-    ICAL_URL = conf['calendar']['ICAL_URL']
+    NOTION_MASTER_ID    = conf['master']['NOTION_MASTER_ID']
+    ICAL_URL            = conf['calendar']['ICAL_URL']
 
     def __init__(self):
-        self.client = Client(auth=self.NOTION_ACCESS_TOKEN)
-        self.database = Database()
-        self.schedule = Schedule()
-        self.contents = Contents()
+        self.client     = Client(auth=self.NOTION_ACCESS_TOKEN)
+        self.database   = Database()
+        self.schedule   = Schedule()
+        self.contents   = Contents()
 
     # 休日かどうかを取得する
     def today_is_holiday(self) -> bool:
@@ -172,7 +172,7 @@ class Getutils:
         ical = requests.get(self.ICAL_URL)
         ical.raise_for_status()
         ical = Calendar.from_ical(ical.text)
-        all_events = [tmp for tmp in ical.walk('VEVENT')]
+        all_events      = [tmp for tmp in ical.walk('VEVENT')]
         all_user_events = [tmp for tmp in all_events if user_name in tmp.get('SUMMARY')]
         try:
             user_event = self.schedule.ical_parse(all_user_events, period=[1, 8])
@@ -202,7 +202,7 @@ class Getutils:
     def _get_subject(self) -> str:
         try:
             subject  = '本日の進捗について'
-            subject += datetime.now().strftime('(%Y/%m/%d)')
+            subject  += datetime.now().strftime('(%Y/%m/%d)')
             return subject
         except:
             return None
@@ -231,11 +231,11 @@ class Getutils:
     # 本文の取得
     def _get_body(self, user_info:dict, user_event:list) -> str:
         try:
-            first = self.contents.create_first(user_info)
-            progress = self.contents.create_progress(user_info)
-            progress_map = self.contents.create_progress_map(user_info)
-            event = self.contents.create_event(user_event)
-            signature = self.contents.create_signature(user_info)
+            first           = self.contents.create_first(user_info)
+            progress        = self.contents.create_progress(user_info)
+            progress_map    = self.contents.create_progress_map(user_info)
+            event           = self.contents.create_event(user_event)
+            signature       = self.contents.create_signature(user_info)
             body = first + progress + "\n\n" + progress_map + "\n\n" + event + "\n\n" + signature
             return body
         except:
@@ -259,9 +259,9 @@ class Getutils:
         all_sleeptime = []
         for db_info in all_db_info:
             if db_info['flag'] == True:
-                all_sleeptime.append([db_info['name'], db_info['flag'], (int(abs(random.gauss(1200,2400))))])
+                all_sleeptime.append([db_info['name'], db_info['flag'], (int(abs(random.gauss(1200,2400)))) ])
             else:
-                all_sleeptime.append([db_info['name'], db_info['flag'], -1])
+                all_sleeptime.append([db_info['name'], db_info['flag'], -1                                  ])
         return all_sleeptime
     
     # メール送信ユーティリティを取得
@@ -279,8 +279,8 @@ class Getutils:
             list
                 メール送信ユーティリティ
         """
-        all_password = [db_info['password'] for db_info in all_db_info if db_info['flag'] == True]
-        all_email = [db_info['email'] for db_info in all_db_info if db_info['flag'] == True]
+        all_password    = [db_info['password'] for db_info in all_db_info if db_info['flag'] == True]
+        all_email       = [db_info['email']    for db_info in all_db_info if db_info['flag'] == True]
         return all_password, all_email
 
     # プロパティを更新
