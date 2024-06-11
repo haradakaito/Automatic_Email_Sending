@@ -43,12 +43,11 @@ class Database:
                 }
             return mailinfo_dict
         # 名前は存在するが，それ以外のプロパティが存在しない場合
+        elif len(parent_node['苗字']['title']) != 0:
+            mailinfo_dict = {
+                'name':         parent_node['苗字']['title'][0]['plain_text'],
+                'flag':         False
+                }
+            return mailinfo_dict
         else:
-            try:
-                mailinfo_dict = {
-                    'name':parent_node['苗字']['title'][0]['plain_text'],
-                    'flag':False
-                    }
-                return mailinfo_dict
-            except:
-                return None
+            return None

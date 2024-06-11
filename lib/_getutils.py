@@ -100,11 +100,7 @@ class Getutils:
             -----
             本日が休日かどうかを取得する
         """
-        try:
-            date = datetime.now()
-            return jpholiday.is_holiday(date) or date.weekday() >= 5
-        except:
-            return None
+        return jpholiday.is_holiday(datetime.now()) or datetime.now().weekday() >= 5
     
     # 全ユーザーのデータベース情報を取得
     def get_all_db_info(self) -> list:
@@ -132,22 +128,17 @@ class Getutils:
     def _get_all_dbid(self) -> list:
         r = self.client.databases.query(self.NOTION_MASTER_ID)
         all_dbid_list = []
-        try:
-            for i in range(len(r['results'])):
+        for i in range(len(r['results'])):
+            if len(r['results'][i]['properties']['データベースID']['title']) != 0:
                 id = r['results'][i]['properties']['データベースID']['title'][0]['plain_text']
                 all_dbid_list.append(id)
-            return all_dbid_list
-        except:
-            return None
+        return all_dbid_list
 
     # データベースIDに対応するDBの情報を取得
     def _get_db_info(self, dbid:str) -> dict:
         r = self.client.databases.query(dbid)
-        try:
-            db_info_dict = self.database.db_info_parse(r)
-            return db_info_dict
-        except:
-            return None
+        db_info_dict = self.database.db_info_parse(r)
+        return db_info_dict
     
     # 全ユーザーの件名を取得
     def get_all_user_subject(self, all_db_info:list) -> list:
@@ -191,8 +182,8 @@ class Getutils:
             list
                 全ユーザーの本文
         """
-        all_user_event = [self._get_user_event(db_info['name']) for db_info in all_db_info if db_info['flag'] == True]
-        all_user_body  = [self._get_body(user_info, user_event) for user_info, user_event in zip(all_db_info, all_user_event)]
+        all_user_event = [self._get_user_event(db_info['name']) for db_info                 in all_db_info if db_info['flag'] == True]
+        all_user_body  = [self._get_body(user_info, user_event) for user_info, user_event   in zip(all_db_info, all_user_event)]
         return all_user_body
     
     # 本文の取得
@@ -203,8 +194,7 @@ class Getutils:
             progress_map    = self.contents.create_progress_map(user_info)
             event           = self.contents.create_event(user_event)
             signature       = self.contents.create_signature(user_info)
-            body = first + progress + "\n\n" + progress_map + "\n\n" + event + "\n\n" + signature
-            return body
+            return first + progress + "\n\n" + progress_map + "\n\n" + event + "\n\n" + signature
         except:
             return None
 

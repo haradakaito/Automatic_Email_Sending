@@ -1,5 +1,4 @@
 from threading import Thread
-from datetime import datetime
 
 from _getutils import Getutils
 from _sendutils import Sendutils
@@ -26,9 +25,9 @@ def main(all_db_info:list) -> None:
         all_subject             = getutils.get_all_user_subject(all_db_info)    # 件名
         all_body                = getutils.get_all_user_body(all_db_info)       # 本文
         all_password, all_email = getutils.get_pass_email(all_db_info)          # パスワードとメールアドレス
+        all_sleeptime           = getutils.get_all_sleeptime(all_db_info)       # 送信時刻
 
         # 全員に通知メッセージを送信
-        all_sleeptime = getutils.get_all_sleeptime(all_db_info)
         sendutils.send_notify_all(all_sleeptime)
 
         # マルチスレッドでメール送信

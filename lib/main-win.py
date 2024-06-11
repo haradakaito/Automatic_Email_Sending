@@ -2,7 +2,6 @@ import schedule
 import time
 
 from threading import Thread
-from datetime import datetime
 
 from _getutils import Getutils
 from _sendutils import Sendutils
