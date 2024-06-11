@@ -58,7 +58,7 @@ class Sendutils:
     TO_EMAIL = conf['send_daily_report_mail']['TO_EMAIL']
 
     # 全員に通知
-    def send_notify_all(self, all_user_name:list, all_sleep_time:list):
+    def send_notify_all(self, all_sleeptime:list) -> None:
         """
             全員に通知を送信
 
@@ -84,9 +84,12 @@ class Sendutils:
         message  = f'{datetime.today().strftime('%Y/%m/%d')}\n\n'
         message += '進捗報告送信予定時刻\n'
         message += '-----------------------------\n'
-        for user_name, sleep_time in sorted(zip(all_user_name, all_sleep_time), key=lambda x: x[1]): # 送信時刻順にソート（昇順）
-            send_time = datetime.now() + timedelta(seconds=sleep_time)
-            message += f'{user_name}: {send_time.strftime("%H:%M")}\n'
+        for name, flag, sleeptime in sorted(all_sleeptime, key=lambda x: x[2]): # 送信時刻順にソート（昇順）
+            send_time = datetime.now() + timedelta(seconds=sleeptime)
+            if flag == True:
+                message += f'{name}: {send_time.strftime("%H:%M")}\n'
+            else:
+                message += f'{name}: ×\n'
         message += '-----------------------------'
         self._send_notify(message)
 
@@ -97,14 +100,17 @@ class Sendutils:
         requests.post(self.LINE_NOTIFY_API, data=self.payload, headers=self.headers)
 
     # メール送信
-    def send_mail(self, send_util:list, subject:str, body:str, sleep_time:int):
+    def send_mail(self, password:str, email:str, subject:str, body:str, sleep_time:int):
         """
             メールを送信
 
             Parameters
             ----------
-            send_util : list
-                メールアドレスとパスワード
+            password : str
+                パスワード
+
+            email : str
+                メールアドレス
 
             subject : str
                 件名
@@ -119,8 +125,6 @@ class Sendutils:
             -------
             None
         """
-        password, email = send_util[0], send_util[1]
-
         msg = message.EmailMessage()
         msg['From'] = email
         msg['To'] = self.TO_EMAIL
@@ -134,6 +138,6 @@ class Sendutils:
         server.ehlo()
         server.starttls()
         server.ehlo()
-        server.login(password=password, user=email)
+        server.login(password, email)
         server.send_message(msg)
         server.quit()

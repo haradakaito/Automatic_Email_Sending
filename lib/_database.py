@@ -40,6 +40,10 @@ class Database:
                              'other':parent_node['自由記入欄']['rich_text'][0]['plain_text'],
                              'flag':True}
             return mailinfo_dict
+        # 名前は存在するが，それ以外のプロパティが存在しない場合
         else:
-            return None
-        
+            try:
+                mailinfo_dict = {'name':parent_node['苗字']['title'][0]['plain_text'], 'flag':False}
+                return mailinfo_dict
+            except:
+                return None

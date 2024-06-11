@@ -106,31 +106,6 @@ class Getutils:
         except:
             return None
     
-    # ランダムな送信時刻を取得
-    def get_sleep_time(self, num:int) -> list:
-        """
-            ランダムな送信時刻を取得
-
-            Parameters
-            ----------
-            num : int
-                送信時刻の数
-
-            Returns
-            -------
-            list
-                送信時刻
-
-            Notes
-            -----
-            平均25，標準偏差20の正規分布に従う乱数を生成し，その値を60で割って整数にし，60で掛けることで送信時刻を取得する
-        """
-        try:
-            sleep_time = [(int(60*abs(random.gauss(25,20)))//60)*60 for _ in range(num)]
-            return sleep_time
-        except:
-            return None
-    
     # 全ユーザーのデータベース情報を取得
     def get_all_db_info(self) -> list:
         """
@@ -189,7 +164,7 @@ class Getutils:
             list
                 全ユーザーの予定
         """
-        all_user_event = [self._get_user_event(db_info['name']) for db_info in all_db_info if db_info != None]
+        all_user_event = [self._get_user_event(db_info['name']) for db_info in all_db_info if db_info['flag'] == True]
         return all_user_event
     
     # ユーザーの1週間分の予定を取得
@@ -220,7 +195,7 @@ class Getutils:
             list
                 全ユーザーの件名
         """
-        all_user_subject = [self._get_subject() for _ in range(len(all_db_info))]
+        all_user_subject = [self._get_subject() for db_info in all_db_info if db_info['flag'] == True]
         return all_user_subject
     
     # 件名の取得
@@ -265,6 +240,48 @@ class Getutils:
             return body
         except:
             return None
+    
+    # ランダムな送信時刻を取得
+    def get_all_sleeptime(self, all_db_info:list) -> list:
+        """
+            全ユーザーの送信時刻を取得
+
+            Parameters
+            ----------
+            all_db_info : list
+                全ユーザーのデータベース情報
+
+            Returns
+            -------
+            list
+                全ユーザーの送信時刻
+        """
+        all_sleeptime = []
+        for db_info in all_db_info:
+            if db_info['flag'] == True:
+                all_sleeptime.append([db_info['name'], db_info['flag'], (int(abs(random.gauss(1200,2400))))])
+            else:
+                all_sleeptime.append([db_info['name'], db_info['flag'], -1])
+        return all_sleeptime
+    
+    # メール送信ユーティリティを取得
+    def get_pass_email(self, all_db_info:list) -> list:
+        """
+            メール送信ユーティリティを取得
+
+            Parameters
+            ----------
+            all_db_info : list
+                全ユーザーのデータベース情報
+
+            Returns
+            -------
+            list
+                メール送信ユーティリティ
+        """
+        all_password = [db_info['password'] for db_info in all_db_info if db_info['flag'] == True]
+        all_email = [db_info['email'] for db_info in all_db_info if db_info['flag'] == True]
+        return all_password, all_email
 
     # プロパティを更新
     def _update_property(self, db_id:str, property_name:str, new_contents:str) -> None:
