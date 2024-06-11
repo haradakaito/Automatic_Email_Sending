@@ -79,23 +79,14 @@ class Sendutils:
             通知のメッセージ例:
             2024/04/26
 
-            進捗報告送信リスト
-            -----------------------------
 
-            user1: 送信予定時刻21:00
-            user2: 送信予定時刻20:30
-            user3: 送信予定時刻20:10
-            user4: 送信予定時刻19:55
-            user5: 送信予定時刻20:00
-
-            -----------------------------
         """
         message  = f'{datetime.today().strftime('%Y/%m/%d')}\n\n'
-        message += '進捗報告送信リスト\n'
+        message += '進捗報告送信予定時刻\n'
         message += '-----------------------------\n'
         for user_name, sleep_time in zip(all_user_name, all_sleep_time):
-            send_time = datetime.now() + timedelta(seconds=sleep_time+60)
-            message += f'{user_name}: 送信予定時刻{send_time.strftime("%H:%M")}\n'
+            send_time = datetime.now() + timedelta(seconds=sleep_time)
+            message += f'{user_name}: {send_time.strftime("%H:%M")}\n'
         message += '-----------------------------'
         self._send_notify(message)
 
@@ -142,6 +133,7 @@ class Sendutils:
         server = smtplib.SMTP(self.SMTP_HOST, self.SMTP_PORT)
         server.ehlo()
         server.starttls()
+        server.ehlo()
         server.login(password=password, user=email)
         server.send_message(msg)
         server.quit()
