@@ -18,43 +18,49 @@ googlecalendartools = GoogleCalendarTools()
 contents            = Contents()
 
 def main() -> None:
-    # 送信可能な[ユーザー名, 可/否，データベースID]を取得
-    check_result = notiontools.check_all_user()
-    all_username = [username for username, result, _    in check_result if result]
-    all_dbid     = [dbid     for _       , result, dbid in check_result if result]
-    # 各ユーザーの送信予定時間を取得
-    all_wait_second = utils.setting_wait_second(num=len(all_username))
+    # 送信可能なデータベースIDを取得
+    checked_dbid    = notiontools.check_all_dbid()
+    suitable_dbid   = [dbid for dbid, result in checked_dbid.items() if result]
+    all_wait_second = utils.setting_wait_second(num=len(suitable_dbid)) # 各ユーザーの送信予定時間を取得
     # 各ユーザーのメール送信（並列処理）
     threads = []
-    for username, dbid, wait_second in zip(all_username, all_dbid, all_wait_second):
-        threads.append(Thread(target=_user_process, args=(username, dbid, wait_second)))
+    for dbid, wait_second in zip(suitable_dbid, all_wait_second):
+        threads.append(Thread(target=_user_process, args=(dbid, wait_second)))
     for t in threads:
         t.start()
     # 送信予定時間を通知
+    all_username = [notiontools.get_property(dbid, "苗字") for dbid in suitable_dbid]
     linenotifytools.notify_sendtime(all_username=all_username, all_wait_second=all_wait_second)
 
-def _user_process(username:str, dbid:str, wait_second:int) -> None:
+def _user_process(dbid:str, wait_second:int) -> None:
     # ユーザー情報を取得
+    name         = notiontools.get_property(dbid, "苗字")
     grade        = notiontools.get_property(dbid, "学年")
     from_addr    = notiontools.get_property(dbid, "静大メール")
     password     = notiontools.get_property(dbid, "パスワード")
     progress     = notiontools.get_property(dbid, "進捗項目")
     progress_map = notiontools.get_property(dbid, "進捗マップ")
-    event        = googlecalendartools.get_event(username)
     signature    = notiontools.get_property(dbid, "署名")
     free         = notiontools.get_property(dbid, "自由記入欄")
+    event        = googlecalendartools.get_event(name=name)
+    
     # 件名と本文を作成
-    subject = contents.create_subject()
-    body    = contents.create_body(username, grade, progress, progress_map, event, signature, free)
-    # メール送信
+    subject      = contents.create_subject()
+    body         = contents.create_body(name=name,                 # ユーザー名
+                                        grade=grade,               # 学年
+                                        progress=progress,         # 進捗項目
+                                        progress_map=progress_map, # 進捗マップ
+                                        event=event,               # 予定
+                                        signature=signature,       # 署名
+                                        free=free)                 # 自由記入欄
+    # メール送信（wait_second秒だけ待機して送信）
     time.sleep(wait_second)
     mailsender.send_mail(from_addr, subject, body, password)
 
 def pre_notify(wait_second) -> None:
-    # 送信可能な[ユーザー名, 可/否，データベースID]を取得
-    check_result = notiontools.check_all_user()
-    linenotifytools.notify_check_result(check_result=check_result, 
-                                        correctable_time=datetime.now()+timedelta(seconds=wait_second))
+    checked_user     = notiontools.check_all_user()
+    correctable_time = datetime.now() + timedelta(seconds=wait_second)
+    linenotifytools.notify_check_result(checked_user=checked_user, correctable_time=correctable_time)
     time.sleep(wait_second)
     return
 

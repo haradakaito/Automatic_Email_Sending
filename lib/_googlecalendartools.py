@@ -15,12 +15,12 @@ class GoogleCalendarTools:
     ICAL_URL = conf['calendar']['ICAL_URL']
 
     # ユーザーの1週間分の予定を取得
-    def get_event(self, username:str) -> list:
+    def get_event(self, name:str) -> list:
         ical = requests.get(self.ICAL_URL)
         ical.raise_for_status()
         ical = Calendar.from_ical(ical.text)
         all_events      = [tmp for tmp in ical.walk('VEVENT')]
-        all_user_events = [tmp for tmp in all_events if username in tmp.get('SUMMARY')]
+        all_user_events = [tmp for tmp in all_events if name in tmp.get('SUMMARY')]
         user_event = self._ical_parse(all_user_events, period=[1, 8])
         return user_event
 

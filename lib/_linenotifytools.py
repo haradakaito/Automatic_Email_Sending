@@ -15,15 +15,15 @@ class Linenotifytools:
     TEST_LINE_NOTIFY_TOKEN  = conf["notification"]["TEST_LINE_NOTIFY_TOKEN"] # テスト用
     LINE_NOTIFY_API         = conf["notification"]["LINE_NOTIFY_API"]
 
-    def notify_check_result(self, check_result:list, correctable_time:datetime) -> None:
+    def notify_check_result(self, checked_user:dict, correctable_time:datetime) -> None:
         msg  = f"{datetime.today().strftime("%Y/%m/%d")}\n\n"
         msg  += f"送信可否（{correctable_time.strftime("%H:%M")}まで修正可能）\n"
         msg  += "-----------------------------\n"
-        for username, flag, _ in check_result:
-            if flag:
-                msg += f"{username}: ○\n"
+        for name, result in checked_user.items():
+            if result:
+                msg += f"{name}: ○\n"
             else:
-                msg += f"{username}: ✖\n"
+                msg += f"{name}: ✖\n"
         msg  += "-----------------------------"
         self._send_notify(msg)
     
