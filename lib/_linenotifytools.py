@@ -15,10 +15,9 @@ class Linenotifytools:
     TEST_LINE_NOTIFY_TOKEN  = conf["notification"]["TEST_LINE_NOTIFY_TOKEN"] # テスト用
     LINE_NOTIFY_API         = conf["notification"]["LINE_NOTIFY_API"]
 
-    def notify_check_result(self, check_result:list, waittime:int) -> None:
+    def notify_check_result(self, check_result:list, correctable_time:datetime) -> None:
         msg  = f"{datetime.today().strftime("%Y/%m/%d")}\n\n"
-        time_limit = datetime.now() + timedelta(seconds=waittime)
-        msg  += f"送信可否（{time_limit.strftime("%H:%M")}まで修正可能）\n"
+        msg  += f"送信可否（{correctable_time.strftime("%H:%M")}まで修正可能）\n"
         msg  += "-----------------------------\n"
         for username, flag, _ in check_result:
             if flag:
@@ -28,12 +27,12 @@ class Linenotifytools:
         msg  += "-----------------------------"
         self._send_notify(msg)
     
-    def notify_sendtime(self, all_username:list, all_waittime:list) -> None:
+    def notify_sendtime(self, all_username:list, all_wait_second:list) -> None:
         msg  = f"{datetime.today().strftime("%Y/%m/%d")}\n\n"
         msg  += "送信予定時刻\n"
         msg  += "-----------------------------\n"
-        for username, waittime in zip(all_username, all_waittime):
-            sendtime = datetime.now() + timedelta(seconds=waittime)
+        for username, wait_second in zip(all_username, all_wait_second):
+            sendtime = datetime.now() + timedelta(seconds=wait_second)
             msg += f"{username}: {sendtime.strftime("%H:%M")}\n"
         msg  += "-----------------------------"
         self._send_notify(msg)
