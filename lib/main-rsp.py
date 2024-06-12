@@ -21,16 +21,20 @@ def main() -> None:
     # 送信可能なデータベースIDを取得
     checked_dbid    = notiontools.check_all_dbid()
     suitable_dbid   = [dbid for dbid, result in checked_dbid.items() if result]
-    all_wait_second = utils.setting_wait_second(num=len(suitable_dbid)) # 各ユーザーの送信予定時間を取得
+    all_user_wait = {} # 各ユーザーの送信予定時間を取得
+    for dbid in suitable_dbid:
+        name = notiontools.get_property(dbid, "苗字")
+        wait_second = utils.setting_wait_second()
+        all_user_wait[name] = wait_second
     # 各ユーザーのメール送信（並列処理）
     threads = []
-    for dbid, wait_second in zip(suitable_dbid, all_wait_second):
+    for dbid in suitable_dbid:
+        wait_second = all_user_wait[notiontools.get_property(dbid, "苗字")]
         threads.append(Thread(target=_user_process, args=(dbid, wait_second)))
     for t in threads:
         t.start()
     # 送信予定時間を通知
-    all_username = [notiontools.get_property(dbid, "苗字") for dbid in suitable_dbid]
-    linenotifytools.notify_sendtime(all_username=all_username, all_wait_second=all_wait_second)
+    linenotifytools.notify_send_time(all_user_wait=all_user_wait)
 
 def _user_process(dbid:str, wait_second:int) -> None:
     # ユーザー情報を取得
@@ -60,7 +64,7 @@ def _user_process(dbid:str, wait_second:int) -> None:
 def pre_notify(wait_second) -> None:
     checked_user     = notiontools.check_all_user()
     correctable_time = datetime.now() + timedelta(seconds=wait_second)
-    linenotifytools.notify_check_result(checked_user=checked_user, correctable_time=correctable_time)
+    linenotifytools.notify_checked_user(checked_user=checked_user, correctable_time=correctable_time)
     time.sleep(wait_second)
     return
 
