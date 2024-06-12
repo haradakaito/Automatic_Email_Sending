@@ -2,12 +2,12 @@ import time
 
 from threading import Thread
 
-from _notiontools        import Notiontools
-from _linenotifytools    import Linenotifytools
-from _utils              import Utils
-from _mailsender         import Mailsender
-from lib._googlecalendartools import GoogleCalendarTools
-from _contents           import Contents
+from _notiontools         import Notiontools
+from _linenotifytools     import Linenotifytools
+from _utils               import Utils
+from _mailsender          import Mailsender
+from _googlecalendartools import GoogleCalendarTools
+from _contents            import Contents
 
 notiontools         = Notiontools()
 linenotifytools     = Linenotifytools()
@@ -39,14 +39,14 @@ def main() -> None:
 
 def _user_process(username:str, dbid:str, waittime:int) -> None:
     # ユーザー情報を取得
-    grade        = notiontools.get_property(dbid, '学年')
-    from_addr    = notiontools.get_property(dbid, '静大メール')
-    password     = notiontools.get_property(dbid, 'パスワード')
-    progress     = notiontools.get_property(dbid, '進捗項目')
-    progress_map = notiontools.get_property(dbid, '進捗マップ')
+    grade        = notiontools.get_property(dbid, "学年")
+    from_addr    = notiontools.get_property(dbid, "静大メール")
+    password     = notiontools.get_property(dbid, "パスワード")
+    progress     = notiontools.get_property(dbid, "進捗項目")
+    progress_map = notiontools.get_property(dbid, "進捗マップ")
     event        = googlecalendartools.get_event(username)
-    signature    = notiontools.get_property(dbid, '署名')
-    free         = notiontools.get_property(dbid, '自由記入欄')
+    signature    = notiontools.get_property(dbid, "署名")
+    free         = notiontools.get_property(dbid, "自由記入欄")
     # 件名と本文を作成
     subject = contents.create_subject()
     body    = contents.create_body(username, grade, progress, progress_map, event, signature, free)
@@ -54,7 +54,7 @@ def _user_process(username:str, dbid:str, waittime:int) -> None:
     time.sleep(waittime)
     mailsender.send_mail(from_addr, subject, body, password)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # 本日が休祝日であれば何もしない
     if utils.today_is_holiday():
         pass
