@@ -29,5 +29,6 @@ class Mailsender:
             server.login(password, from_addr)
             server.send_message(msg)
             server.quit()
+            return True
         except smtplib.SMTPAuthenticationError:
-            print("Error: SMTP認証に失敗しました (Codes:101)")
+            return "SMTP認証に失敗しました"

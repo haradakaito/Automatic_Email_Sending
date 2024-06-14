@@ -16,23 +16,24 @@ class Contents:
         return f"今週の進捗について({datetime.today().strftime("%Y/%m/%d")})"
     
     def create_body(self, name:str, grade:str, progress:str, progress_map:str, event:list, signature:str, free:str) -> str:
+        # 名乗り
         body  = f"{self.AFFILIATION}の皆様\n\n"
         body += f"{self.AFFILIATION}{grade}の{name}です.\n\n"
-
+        # 進捗内容の報告
         body += "本日の進捗を共有させていただきます.\n"
         body += f"本日は，{progress} を行いました."
         body += free
         body += "\n\n"
-
+        # 進捗マップ
         body += "------◎本日実施，○実施中，●未実施，★完了------\n"
         body += progress_map
         body += "\n\n"
-
+        # 今後の予定
         body += "-----今後の予定・その他-----\n"
         body += "".join([f"{self._convert_event_time(tmp[0])}\t: {tmp[1]}\n" for tmp in event])
         body += "------------------------------\n"
         body += "\n\n"
-
+        # 署名
         body += signature
         return body
 

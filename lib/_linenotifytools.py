@@ -19,11 +19,11 @@ class Linenotifytools:
         msg = f"{datetime.today().strftime("%Y/%m/%d")}\n\n"
         msg += f"送信可否（{correctable_time.strftime("%H:%M")}まで修正可能）\n"
         msg += "-----------------------------\n"
-        for name, result in sorted(checked_user.items(), key=lambda x:x[1]):
+        for name, result in sorted(checked_user.items(), key=lambda x:(x[1], x[0])):
             if result:
                 msg += f"{name}: ○\n"
             else:
-                msg += f"{name}: ✖\n"
+                msg += f"{name}: ✕\n"
         msg += "-----------------------------"
         self._send_notify(msg)
     
@@ -31,9 +31,22 @@ class Linenotifytools:
         msg = f"{datetime.today().strftime("%Y/%m/%d")}\n\n"
         msg += "送信予定時刻\n"
         msg += "-----------------------------\n"
-        for username, wait_second in sorted(all_user_wait.items(), key=lambda x:x[1]):
+        for username, wait_second in sorted(all_user_wait.items(), key=lambda x:(x[1], x[0])):
             sendtime = datetime.now() + timedelta(seconds=wait_second)
             msg += f"{username}: {sendtime.strftime("%H:%M")}\n"
+        msg += "-----------------------------"
+        self._send_notify(msg)
+
+    def notify_send_result(self, send_results:dict) -> None:
+        msg = f"{datetime.today().strftime("%Y/%m/%d")}\n\n"
+        msg += "送信結果\n"
+        msg += "-----------------------------\n"
+        for name, result in sorted(send_results.items(), key=lambda x:(x[1], x[0])):
+            print(result)
+            if result:
+                msg += f"{name}: ○\n"
+            else:
+                msg += f"{name}: {result}\n"
         msg += "-----------------------------"
         self._send_notify(msg)
 
