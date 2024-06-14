@@ -38,8 +38,8 @@ class Contents:
 
     def _convert_event_time(self, event_time:str) -> str:
         if "T" in event_time:
-            event_time  = event_time.replace("T", " ")
-            event_time  = event_time[:-9]
+            event_time = event_time.replace("T", " ")
+            event_time = event_time[:-9]
         else:
-            event_time  += "\t"
+            event_time += "\t"
         return event_time

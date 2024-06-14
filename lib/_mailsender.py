@@ -11,15 +11,15 @@ class Mailsender:
     conf_path   = current_dir / "../config/config.json"
     conf        = json.load(open(conf_path, "r", encoding="utf-8"))
     # クラス変数
-    SMTP_HOST               = conf["sender"]["SMTP_HOST"]
-    SMTP_PORT               = conf["sender"]["SMTP_PORT"]
-    TO_EMAIL                = conf["send_daily_report_mail"]["TO_EMAIL"]
+    SMTP_HOST = conf["sender"]["SMTP_HOST"]
+    SMTP_PORT = conf["sender"]["SMTP_PORT"]
+    TO_EMAIL  = conf["send_daily_report_mail"]["TO_EMAIL"]
 
     def send_mail(self, from_addr:str, subject:str, body:str, password:str) -> None:
-        msg             = message.EmailMessage()
-        msg["From"]     = from_addr
-        msg["To"]       = self.TO_EMAIL
-        msg["Subject"]  = subject
+        msg            = message.EmailMessage()
+        msg["From"]    = from_addr
+        msg["To"]      = self.TO_EMAIL
+        msg["Subject"] = subject
         msg.set_content(body)
         try: 
             server = smtplib.SMTP(self.SMTP_HOST, self.SMTP_PORT)
