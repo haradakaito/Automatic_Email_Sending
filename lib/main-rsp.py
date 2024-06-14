@@ -92,7 +92,7 @@ def _user_process(dbid:str, wait_second:int) -> None:
     # メール送信（wait_second秒だけ待機して送信）
     time.sleep(wait_second)
     try:
-        send_result = mailsender.send_mail(
+        mailsender.send_mail(
             from_addr = from_addr,
             subject   = subject,
             body      = body,

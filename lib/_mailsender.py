@@ -21,14 +21,11 @@ class Mailsender:
         msg["To"]      = self.TO_EMAIL
         msg["Subject"] = subject
         msg.set_content(body)
-        try: 
-            server = smtplib.SMTP(self.SMTP_HOST, self.SMTP_PORT)
-            server.ehlo()
-            server.starttls()
-            server.ehlo()
-            server.login(password, from_addr)
-            server.send_message(msg)
-            server.quit()
-            return True
-        except smtplib.SMTPAuthenticationError:
-            return "SMTP認証に失敗しました"
+
+        server = smtplib.SMTP(self.SMTP_HOST, self.SMTP_PORT)
+        server.ehlo()
+        server.starttls()
+        server.ehlo()
+        server.login(password, from_addr)
+        server.send_message(msg)
+        server.quit()
