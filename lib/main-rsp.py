@@ -42,7 +42,6 @@ def main() -> None:
             thread = Thread(target=_user_process, args=(dbid, wait_second))
             threads.append(thread)
             thread.start()
-
     # 送信予定時間を通知
     linenotifytools.notify_send_time(all_user_wait=all_user_wait)
 
@@ -50,7 +49,10 @@ def main() -> None:
     for thread in threads:
         thread.join()
     # 送信結果を通知
-    linenotifytools.notify_send_result(send_results=send_results)
+    if all([result == True for result in send_results.values()]): # すべての送信が成功した場合
+        pass
+    else:
+        linenotifytools.notify_send_result(send_results=send_results)
 
 # 事前通知
 def _pre_notify(wait_second) -> None:

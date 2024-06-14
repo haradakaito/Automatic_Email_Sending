@@ -42,8 +42,7 @@ class Linenotifytools:
         msg += "送信結果\n"
         msg += "-----------------------------\n"
         for name, result in sorted(send_results.items(), key=lambda x:(x[1], x[0])):
-            print(result)
-            if result:
+            if result == True:
                 msg += f"{name}: ○\n"
             else:
                 msg += f"{name}: {result}\n"
