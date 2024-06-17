@@ -33,7 +33,7 @@ def main() -> None:
     for dbid, result in checked_dbid.items():
         if result:
             wait_second         = utils.setting_wait_second() # 待機時間を取得
-            name                = notiontools.get_property(dbid, "苗字")
+            name                = notiontools.get_property(dbid, '苗字')
             all_user_wait[name] = wait_second
             # スレッドで実行（入力：データベースID，待機時間）
             thread = Thread(target=_user_process, args=(dbid, wait_second))
@@ -62,17 +62,17 @@ def _pre_notify(wait_second) -> None:
 def _user_process(dbid:str, wait_second:int) -> None:
     # ユーザー情報を取得
     try:
-        name         = notiontools.get_property(dbid, "苗字")
-        grade        = notiontools.get_property(dbid, "学年")
-        from_addr    = notiontools.get_property(dbid, "静大メール")
-        password     = notiontools.get_property(dbid, "パスワード")
-        progress     = notiontools.get_property(dbid, "進捗項目")
-        progress_map = notiontools.get_property(dbid, "進捗マップ")
-        signature    = notiontools.get_property(dbid, "署名")
-        free         = notiontools.get_property(dbid, "自由記入欄")
+        name         = notiontools.get_property(dbid, '苗字')
+        grade        = notiontools.get_property(dbid, '学年')
+        from_addr    = notiontools.get_property(dbid, '静大メール')
+        password     = notiontools.get_property(dbid, 'パスワード')
+        progress     = notiontools.get_property(dbid, '進捗項目')
+        progress_map = notiontools.get_property(dbid, '進捗マップ')
+        signature    = notiontools.get_property(dbid, '署名')
+        free         = notiontools.get_property(dbid, '自由記入欄')
         event        = googlecalendartools.get_event(name=name)
     except:
-        results[name] = "DBの取得に失敗"
+        results[name] = 'DBの取得に失敗'
         return
     # 件名と本文を作成
     try:
@@ -87,7 +87,7 @@ def _user_process(dbid:str, wait_second:int) -> None:
             free         = free
             )
     except:
-         results[name] = "メールの作成に失敗"
+         results[name] = 'メールの作成に失敗'
          return
     # メール送信（wait_second秒だけ待機して送信）
     time.sleep(wait_second)
@@ -99,10 +99,10 @@ def _user_process(dbid:str, wait_second:int) -> None:
             password  = password
             )
     except:
-        results[name] = "メールの送信に失敗"
+        results[name] = 'メールの送信に失敗'
         return
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     if utils.today_is_holiday():
         pass
     # 本日が休祝日でない場合
