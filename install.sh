@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo "=== Installing python libraries ==="
+python -m pip install --upgrade pip
 pip install --break-system-packages -r requirements.txt || pip install -r requirements.txt
 
 echo "=== Copying files ==="
