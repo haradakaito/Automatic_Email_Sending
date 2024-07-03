@@ -51,6 +51,6 @@ class Linenotifytools:
 
     def _send_notify(self, msg:str) -> None:
         payload = {'message': msg}
-        headers = {'Authorization': 'Bearer ' + self.TEST_LINE_NOTIFY_TOKEN}
+        headers = {'Authorization': 'Bearer ' + self.LINE_NOTIFY_TOKEN}
         # headers = {'Authorization': 'Bearer ' + self.TEST_LINE_NOTIFY_TOKEN} # テスト用
         requests.post(self.LINE_NOTIFY_API, data=payload, headers=headers)

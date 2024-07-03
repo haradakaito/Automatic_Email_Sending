@@ -23,7 +23,7 @@ class Mailsender:
         msg.set_content(body)
 
         server = smtplib.SMTP(self.SMTP_HOST, self.SMTP_PORT)
-        # TLS通信を確立する際に自動でechoされるので明示的に書く必要はない（むしろ書くとエラーになる）
+        # TLS通信を確立する際に自動でechoされるので明示的に書く必要はない
         server.starttls()
         server.login(user=from_addr, password=password)
         server.send_message(msg)

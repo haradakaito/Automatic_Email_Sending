@@ -106,8 +106,7 @@ def _user_process(dbid:str, wait_second:int) -> None:
 
 if __name__ == '__main__':
     # 毎日19:00に通知送信
-    # schedule.every(1).day.at('19:00').do(main)
-    # while(True):
-    #     schedule.run_pending()
-    #     time.sleep(1)
-    main()
+    schedule.every(1).day.at('19:00').do(main)
+    while(True):
+        schedule.run_pending()
+        time.sleep(1)
