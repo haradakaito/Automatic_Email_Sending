@@ -23,9 +23,9 @@ results = {} # {name: result_message}
 
 # メイン処理
 def main() -> None:
-    if utils.today_is_holiday():
+    if not utils.today_is_holiday():
         # 事前通知して30分後に送信
-        _pre_notify(wait_second=1800)
+        _pre_notify(wait_second=0)
 
         # データベースIDを取得
         checked_dbid = notiontools.check_all_dbid()
@@ -92,9 +92,9 @@ def _user_process(dbid:str, wait_second:int) -> None:
          results[name] = 'メールの作成に失敗'
          return
     # メール送信（wait_second秒だけ待機して送信）
-    time.sleep(wait_second)
+    # time.sleep(wait_second)
     try:
-        send_result = mailsender.send_mail(
+        mailsender.send_mail(
             from_addr = from_addr,
             subject   = subject,
             body      = body,
@@ -106,7 +106,8 @@ def _user_process(dbid:str, wait_second:int) -> None:
 
 if __name__ == '__main__':
     # 毎日19:00に通知送信
-    schedule.every(1).day.at('19:30').do(main)
-    while(True):
-        schedule.run_pending()
-        time.sleep(1)
+    # schedule.every(1).day.at('19:00').do(main)
+    # while(True):
+    #     schedule.run_pending()
+    #     time.sleep(1)
+    main()

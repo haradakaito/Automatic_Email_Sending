@@ -35,13 +35,13 @@ class GoogleCalendarTools:
             event_name = str(e.get('SUMMARY'))
             event_list.append((event_time, event_name))
         return event_list
-    
+
     def _change_timezone(self, src):
         if isinstance(src, datetime):
             return src.astimezone(timezone(timedelta(hours=9)))
         else:
             return src
-    
+
     def _datetime_to_date(self, src):
         if isinstance(src, datetime):
             return src.date()

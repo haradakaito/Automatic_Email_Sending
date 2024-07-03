@@ -12,3 +12,9 @@
 **/config/**
 
 !**/config/config_example.json
+
+# 仮想環境
+.venv_automail/Include/**
+.venv_automail/Lib/**
+.venv_automail/Scripts/**
+.venv_automail/**

@@ -14,7 +14,7 @@ class Contents:
 
     def create_subject(self) -> str:
         return f"今週の進捗について({datetime.today().strftime('%Y/%m/%d')})"
-    
+
     def create_body(self, name:str, grade:str, progress:str, progress_map:str, event:list, signature:str, free:str) -> str:
         # 名乗り
         body  = f'{self.AFFILIATION}の皆様\n\n'
