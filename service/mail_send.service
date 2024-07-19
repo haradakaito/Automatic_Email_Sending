@@ -4,7 +4,7 @@ Description=mail sender
 [Service]
 Type=simple
 WorkingDirectory=/usr/local/bin/auto_mail_send/lib/
-ExecStart=/usr/bin/python /usr/local/bin/auto_mail_send/lib/master-rsp.py
+ExecStart=/usr/bin/python /usr/local/bin/auto_mail_send/lib/main-rsp.py
 
 [Install]
 WantedBy=multi-user.target

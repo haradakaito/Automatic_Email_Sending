@@ -89,8 +89,8 @@ def _user_process(dbid:str, wait_second:int) -> None:
             free         = free
             )
     except:
-         results[name] = 'メールの作成に失敗'
-         return
+        results[name] = 'メールの作成に失敗'
+        return
     # メール送信（wait_second秒だけ待機して送信）
     time.sleep(wait_second)
     try:
