@@ -13,7 +13,7 @@ class Contents:
     AFFILIATION = conf['contents']['AFFILIATION']
 
     def create_subject(self) -> str:
-        return f"今週の進捗について({datetime.today().strftime('%Y/%m/%d')})"
+        return f"本日の進捗について({datetime.today().strftime('%Y/%m/%d')})"
 
     def create_body(self, name:str, grade:str, progress:str, progress_map:str, event:list, signature:str, free:str) -> str:
         # 名乗り
