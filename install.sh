@@ -1,7 +1,8 @@
 #!/bin/bash
 
 echo "=== Installing python libraries ==="
-pip install --break-system-packages -r requirements.txt || pip install -r requirements.txt
+python -m pip install --upgrade pip
+pip install -r requirements.txt || pip install -r requirements.txt
 
 echo "=== Copying files ==="
 cp ./service/* /etc/systemd/system/
