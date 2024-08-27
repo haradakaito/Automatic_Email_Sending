@@ -1,4 +1,4 @@
-# 定時メール自動送信プログラム
+# 定時メール自動送信システム
 ## 1 システム概要図
 ![システム概要_ver1 1 0](https://github.com/haradakaito/Automatic_Email_Sending/assets/75819611/5c1dc72e-51ff-4c23-b7ef-180dad5381ed)
 
